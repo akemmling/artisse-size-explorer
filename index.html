@@ -63,16 +63,16 @@ h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-
 .hint{padding:0 8px 10px; color:var(--faint); font-size:13px; text-align:left;}
 
 /* rows */
-.row{display:grid; grid-template-columns:88px minmax(0,1fr) 70px 78px 70px 92px; align-items:center;
+.row{display:grid; grid-template-columns:104px minmax(0,1fr) 70px 78px 70px 92px; align-items:center;
   gap:9px; padding:5px 10px; border-radius:9px; cursor:pointer; transition:opacity .12s;}
 .row:hover{background:color-mix(in srgb,var(--teal-soft) 50%, transparent);}
 .row.active{background:var(--teal-soft);}
 .row.fit{background:color-mix(in srgb,var(--teal) 13%, transparent); box-shadow:inset 2px 0 0 var(--teal);}
-.row.fit .dev::before{content:"\2713 "; color:var(--teal); font-weight:700;}
+.row.fit .dev::before{content:"\2605\2605 "; color:var(--teal); font-weight:700; font-size:12px; letter-spacing:-.5px;}
 .row.ok{background:color-mix(in srgb,var(--teal) 6%, transparent); box-shadow:inset 2px 0 0 color-mix(in srgb,var(--teal) 45%, transparent);}
-.row.ok .dev::before{content:"\2713 "; color:color-mix(in srgb,var(--teal) 55%, transparent); font-weight:700;}
+.row.ok .dev::before{content:"\2605 "; color:var(--teal); font-weight:700; font-size:12px; letter-spacing:-.5px;}
 .row.rec{background:color-mix(in srgb,var(--teal) 20%, transparent); box-shadow:inset 3px 0 0 var(--teal);}
-.row.rec .dev::before{content:"\2605 "; color:var(--teal); font-weight:700;}
+.row.rec .dev::before{content:"\2605\2605\2605 "; color:var(--teal); font-weight:700; font-size:12px; letter-spacing:-.5px;}
 .row.oor{opacity:.4;}
 .row.head{cursor:default; align-items:end; padding-bottom:6px;}
 .row.head:hover{background:none;}
@@ -179,11 +179,12 @@ footer a:hover{text-decoration:underline;}
         <button id="clear" type="button">Clear</button>
         <span id="match-info"></span>
       </div>
-      <p class="hint">Sliders move to the entered width; rows are highlighted where the device protrudes
-        <b>0.5&ndash;0.8&nbsp;mm</b> into the neck, up to <b>1.0&nbsp;mm</b>.
-        <b>Just by numbers &mdash; <span style="color:var(--teal)">&#9733;</span> marks a probably optimal size
-        which may be considered for implant (greatest %&nbsp;width compression, protrusion beyond neck
-        0.5&ndash;1&nbsp;mm).</b> Tick = rated max sac; left of it is over-compressed (extrapolated).</p>
+      <p class="hint">Sliders move to the entered width.
+        <b>Rows are star-rated by fit: &#9733; acceptable (up to <b>1.0&nbsp;mm</b> protrusion into the neck),
+        &#9733;&#9733; good (<b>0.5&ndash;0.8&nbsp;mm</b>), &#9733;&#9733;&#9733; probably optimal &mdash; the
+        greatest %&nbsp;width compression among these, which may be considered for implant. Only sizes with at
+        least <b>0.5&nbsp;mm width oversizing</b> are rated &mdash; a flush, 0%-compression size is never suggested.</b>
+        Tick = rated max sac; left of it is over-compressed (extrapolated).</p>
       <div class="table-scroll"><div class="table">
       <div class="row head" aria-hidden="true">
         <span class="colhead">Artisse device</span>
@@ -296,10 +297,14 @@ footer a:hover{text-decoration:underline;}
     <p>Entering a sac width sets every device's deployed width to that value (the braid conforms to the
       cavity), so each row shows the height that device would take in that sac. A row is highlighted when its
       compressed height sits <b>0.5&ndash;0.8&nbsp;mm above</b> the entered sac height — the device protrudes
-      that much into the neck — and is still flagged up to a <b>1.0&nbsp;mm</b> ceiling. Among
-      these sizes the <b>&#9733;</b> marks the one with the greatest %&nbsp;width compression; a
+      that much into the neck — and is still flagged up to a <b>1.0&nbsp;mm</b> ceiling. Rows are star-rated:
+      <b>&#9733;</b> acceptable (within the 1.0&nbsp;mm ceiling), <b>&#9733;&#9733;</b> good (inside the
+      0.5&ndash;0.8&nbsp;mm band), and <b>&#9733;&#9733;&#9733;</b> the one with the greatest %&nbsp;width
+      compression among these; a
       larger device squeezed into the same neck gives more radial oversizing and wall apposition for the
-      same protrusion, so it may be considered. Devices wider than the sac are dimmed as undersized.</p>
+      same protrusion, so it may be considered. A size must have at least <b>0.5&nbsp;mm width oversizing</b>
+      (device nominal width minus sac width) to be rated at all, so a flush 0%-compression size is never
+      suggested. Devices wider than the sac are dimmed as undersized.</p>
 
     <p class="step">08 — The slider scale</p>
     <h3>Why thumb travel &ne; millimetres</h3>
@@ -348,9 +353,10 @@ footer a:hover{text-decoration:underline;}
     <b>Run it as an app:</b> in Safari choose File &#9656; Add to Dock; or in Chrome use the &#8942; menu
     &#9656; Cast, Save and Share &#9656; Create Shortcut and tick &ldquo;Open as window.&rdquo; The file is
     fully self-contained and works offline.<br><br>
-    <span class="byline">Created by Prof. Dr. A. Kemmling, Clinic for Neuroradiology, University Hospital
-    Marburg (UKGM), Germany &middot; for research and educational use &middot; &copy; 2026 &middot;
-    <a href="mailto:andre.kemmling@uk-gm.de">andre.kemmling@uk-gm.de</a></span>
+    <span class="byline">Created by Prof. Dr. André Kemmling, Clinic for Neuroradiology, University Hospital
+    Marburg (UKGM), Germany &middot; for research and educational use &middot;
+    &copy; 2026 André Kemmling. All rights reserved. &middot;
+    <a href="mailto:kemmling@uni-marburg.de">kemmling@uni-marburg.de</a></span>
   </footer>
 </div>
 
@@ -368,6 +374,7 @@ const devices=[
 let active=0, targetW=null, targetH=null;
 const SC=12, CX=62, CY=66, EPS=1e-9, THUMB=14, P0=0.25, EXT=0.5, HTOL=0.5;
 const PROT_MIN=0.5, PROT_IDEAL=0.8, PROT_MAX=1.0;   // neck protrusion: ideal 0.5-0.8 mm, 1.0 mm hard max
+const MINOVER=0.5;                                  // require ≥0.5 mm width oversizing — never recommend a 0% (flush) size
 const fmt=x=>(Math.round(x*10)/10).toFixed(1);
 
 function fit(dev){
@@ -537,6 +544,8 @@ function runMatch(){
     if(hasH){
       const prot=heightAt(dev,W)-H;                       // + = device protrudes into the neck
       const comp=(dev.b-W)/dev.b;                         // radial (width) compression; higher = better
+      const over=dev.b-W;                                 // width oversizing (mm); device wider than the sac
+      if(over<MINOVER-1e-9) return;                       // skip flush / 0%-compression sizes — no radial apposition
       const dist=prot<PROT_MIN?(PROT_MIN-prot):(prot>PROT_MAX?(prot-PROT_MAX):0);
       if(dist<bestErr){bestErr=dist;best=i;}
       if(prot>=PROT_MIN-1e-9 && prot<=PROT_IDEAL+1e-9){   // ideal protrusion 0.5-0.8 mm
@@ -560,6 +569,7 @@ function runMatch(){
       const bp=heightAt(devices[best],W)-H;
       const desc=bp>=0? '+'+fmt(bp)+' mm into neck' : fmt(-bp)+' mm short of neck';
       matchInfo.textContent='Closest: '+devices[best].b.toFixed(1)+'\u00d7'+devices[best].c.toFixed(1)+' ('+desc+')'; }
+    else if(reach>0) matchInfo.textContent='No size keeps \u22650.5 mm oversizing at this width';
     else matchInfo.textContent='No device reaches this width';
   } else {
     matchInfo.textContent= reach? reach+' device'+(reach!=1?'s':'')+' reach this width' : 'No device reaches this width';
