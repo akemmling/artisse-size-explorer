@@ -29,6 +29,10 @@ body{
 
 .eyebrow{font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:15px; letter-spacing:.11em;
   text-transform:uppercase; color:var(--teal-ink); font-weight:600; margin:0 0 11px;}
+.head-top{display:flex; justify-content:space-between; align-items:baseline; gap:12px;}
+.head-top .eyebrow{margin:0 0 11px;}
+.version{font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.04em;
+  color:var(--faint); white-space:nowrap; font-weight:500;}
 h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-weight:600;}
 .lede{color:var(--muted); margin:0; max-width:62ch;}
 .caliper{display:flex; align-items:center; margin:22px 0 28px; color:var(--faint);}
@@ -67,12 +71,9 @@ h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-
   gap:9px; padding:5px 10px; border-radius:9px; cursor:pointer; transition:opacity .12s;}
 .row:hover{background:color-mix(in srgb,var(--teal-soft) 50%, transparent);}
 .row.active{background:var(--teal-soft);}
-.row.fit{background:color-mix(in srgb,var(--teal) 13%, transparent); box-shadow:inset 2px 0 0 var(--teal);}
-.row.fit .dev::before{content:"\2605\2605 "; color:var(--teal); font-weight:700; font-size:12px; letter-spacing:-.5px;}
-.row.ok{background:color-mix(in srgb,var(--teal) 6%, transparent); box-shadow:inset 2px 0 0 color-mix(in srgb,var(--teal) 45%, transparent);}
-.row.ok .dev::before{content:"\2605 "; color:var(--teal); font-weight:700; font-size:12px; letter-spacing:-.5px;}
-.row.rec{background:color-mix(in srgb,var(--teal) 20%, transparent); box-shadow:inset 3px 0 0 var(--teal);}
-.row.rec .dev::before{content:"\2605\2605\2605 "; color:var(--teal); font-weight:700; font-size:12px; letter-spacing:-.5px;}
+.row.rec{background:color-mix(in srgb,var(--teal) 12%, transparent); box-shadow:inset 2px 0 0 var(--teal);}
+.row.rec.primary{background:color-mix(in srgb,var(--teal) 18%, transparent); box-shadow:inset 3px 0 0 var(--teal);}
+.row.rec .dev::before{content:"\2605 "; color:var(--teal); font-weight:700; font-size:12px; letter-spacing:-.5px;}
 .row.oor{opacity:.4;}
 .row.head{cursor:default; align-items:end; padding-bottom:6px;}
 .row.head:hover{background:none;}
@@ -164,7 +165,10 @@ footer a:hover{text-decoration:underline;}
 <body>
 <div class="wrap">
   <header>
-    <p class="eyebrow">Intrasaccular sizing · Artisse</p>
+    <div class="head-top">
+      <p class="eyebrow">Intrasaccular sizing · Artisse</p>
+      <span class="version" title="build">v202606242334</span>
+    </div>
     <h1>Compressed-height explorer</h1>
     <p class="lede">See how each Artisse device's deployed height changes with compression, or enter a
       measured aneurysm and let the tool flag every device whose compressed shape fits.</p>
@@ -180,14 +184,11 @@ footer a:hover{text-decoration:underline;}
         <button id="clear" type="button">Clear</button>
         <span id="match-info"></span>
       </div>
-      <p class="hint">Sliders move to the entered width.
-        <b>Rows are star-rated: &#9733; acceptable (<b>0.2&ndash;0.5&nbsp;mm</b> protrusion, only with
-        <b>&ge;20%</b> width compression), &#9733;&#9733; good (<b>0.5&ndash;1.0&nbsp;mm</b> protrusion),
-        &#9733;&#9733;&#9733; probably optimal &mdash; the greatest %&nbsp;width compression among these, which
-        may be considered for implant. A flush 0%-compression size is never rated, and protrusion over
-        <b>1.0&nbsp;mm</b> is never a fit; if no size reaches these bands, any size with positive compression
-        and protrusion is still considered.</b>
-        Tick = rated max sac; left of it is over-compressed (extrapolated).</p>
+      <p class="hint">Move a slider manually to explore a device, or enter an aneurysm width and
+        dome&ndash;neck height to get a recommended size. Up to three suitable devices are marked with a
+        star (<span style="color:var(--teal); font-weight:700">&#9733;</span>); the lead pick is named in
+        <i>Consider&hellip;</i> above. The tick on each slider is that device's rated maximum sac width &mdash;
+        left of it is over-compressed (extrapolated). How sizes are chosen is detailed in the technical notes below.</p>
       <div class="table-scroll"><div class="table">
       <div class="row head" aria-hidden="true">
         <span class="colhead">Artisse device</span>
@@ -296,18 +297,24 @@ footer a:hover{text-decoration:underline;}
       negative (amber) means it would come up short.</p>
 
     <p class="step">07 — Matching an aneurysm</p>
-    <h3>How the fit highlight works</h3>
+    <h3>How sizes are recommended</h3>
     <p>Entering a sac width sets every device's deployed width to that value (the braid conforms to the
-      cavity), so each row shows the height that device would take in that sac. Each row is then rated on two
-      things together &mdash; how far the device protrudes into the neck (compressed height minus sac height)
-      and how much its width is compressed. <b>&#9733;&#9733;</b> good = <b>0.5&ndash;1.0&nbsp;mm</b>
-      protrusion; <b>&#9733;</b> acceptable = a shallower <b>0.2&ndash;0.5&nbsp;mm</b> protrusion, allowed
-      only when width compression reaches <b>&ge;20%</b> to compensate; and <b>&#9733;&#9733;&#9733;</b> marks
-      the greatest %&nbsp;width compression among the rated sizes, which
-      may be considered. A flush 0%-compression size is never rated (no radial apposition), and protrusion
-      beyond <b>1.0&nbsp;mm</b> is never counted as a fit. When no size reaches either band, any size whose
-      compression and protrusion are both positive (within the ceiling) is still offered for consideration.
-      Devices wider than the sac are dimmed as undersized.</p>
+      cavity), so each row shows the height that device would take in that sac. Each device is then judged on two
+      things together &mdash; how far it protrudes into the neck (compressed height minus sac height) and how much
+      its width is compressed. A size is a candidate fit when protrusion is in the working range and width
+      compression is positive: a <b>good</b> fit protrudes <b>0.5&ndash;1.0&nbsp;mm</b>; an <b>acceptable</b> fit
+      protrudes a shallower <b>0.2&ndash;0.5&nbsp;mm</b>, allowed only when width compression reaches
+      <b>&ge;20%</b> to compensate. A flush 0%-compression size is never recommended (no radial apposition).</p>
+    <p>Up to <b>three</b> suitable devices are marked with a single star
+      (<span style="color:var(--teal); font-weight:700">&#9733;</span>); the lead pick &mdash; named in
+      <i>Consider&hellip;</i> &mdash; carries a slightly stronger highlight. For a narrow sac the lead pick is the
+      candidate with the <b>greatest width compression</b>. For a sac <b>wider than 4&nbsp;mm</b> the lead pick
+      instead targets the size whose protrusion lands closest to <b>&ge;1&nbsp;mm</b>, since a wider sac seats more
+      securely with a little more neck protrusion. Protrusion beyond <b>1.0&nbsp;mm</b> is not a good or acceptable
+      fit, but when nothing reaches the working range the single closest size with positive compression and
+      protrusion is still offered &mdash; even if it sits just past the ceiling; a lead pick protruding more than
+      <b>1.5&nbsp;mm</b> is flagged <span style="color:var(--warn)">protrusion may be too high</span>. Devices
+      narrower than the sac (which cannot reach it) are dimmed as undersized.</p>
 
     <p class="step">08 — The slider scale</p>
     <h3>Why thumb travel &ne; millimetres</h3>
@@ -500,6 +507,7 @@ function updateFocus(){
     else { txt='Flush at the neck'; }
     if(dw<-0.05) txt+=' · '+fmt(-dw)+' mm narrower than sac';
     else if(dw>0.05) txt+=' · '+fmt(dw)+' mm wider than sac';
+    if(dh>1.5) txt+=' \u00b7 may be too high!';
     necknote.textContent=txt; necknote.className=cls; necknote.style.display='';
   } else { aneufill.style.display='none'; aneu.style.display='none'; neckline.style.display='none'; necknote.style.display='none'; }
   E('bx1',{x1:CX-rx*0.9,x2:CX+rx*0.9,y1:CY,y2:CY,stroke});
@@ -520,7 +528,7 @@ function resetDefault(){
   targetW=null; targetH=null;
   rowsEl.classList.remove('matching');
   [...rowsEl.children].forEach(r=>{
-    r.classList.remove('fit','ok','rec','oor');
+    r.classList.remove('fit','ok','rec','primary','oor');
     r.querySelector('input').value=Math.round(P0*1000);
     updateRow(r);
   });
@@ -533,12 +541,11 @@ function runMatch(){
   targetH = hasH ? H : null;
   if(!hasW){ resetDefault(); return; }
   rowsEl.classList.add('matching');
-  let rated=0, firstInRange=-1, reach=0;
-  let goodBest=-1, goodC=-1, accBest=-1, accC=-1;
-  const fallback=[];                                       // positive compression & protrusion but below the bands — used only if nothing is rated
+  let firstInRange=-1, reach=0;
+  const good=[], acc=[], fallback=[];                      // good = 0.5-1.0 mm; acc = 0.2-0.5 mm & >=20% comp; fallback = outside the bands (too shallow, or past the ceiling)
   [...rowsEl.children].forEach((r,i)=>{
     const dev=devices[i];
-    r.classList.remove('fit','ok','rec','oor');
+    r.classList.remove('fit','ok','rec','primary','oor');
     // Compress every device to the sac width. Over-compression below the rated max is allowed and
     // extrapolated; a device never deploys wider than its nominal b, so a sac wider than b leaves it
     // fully expanded (undersized).
@@ -550,31 +557,50 @@ function runMatch(){
       const prot=heightAt(dev,W)-H;                       // + = device protrudes into the neck
       const protR=Math.round(prot*10)/10;                 // judge on the displayed 0.1 mm value — finer is below model precision
       const comp=(dev.b-W)/dev.b;                         // radial (width) compression; higher = better
-      // Rate on protrusion + compression. A flush 0% size and protrusion past the 1.0 mm ceiling are never rated.
-      if(comp<=1e-9) return;
-      if(protR<=1e-9 || protR>PROT_MAX+1e-9) return;      // protrusion must be positive and within the 1.0 mm ceiling (as shown)
-      if(protR>=PROT_GOOD-1e-9){                          // 0.5-1.0 mm protrusion: good
-        r.classList.add('fit'); rated++;
-        if(comp>goodC){goodC=comp; goodBest=i;}
-      } else if(protR>=PROT_MIN-1e-9 && comp>=COMP_LOWPROT-1e-9){ // 0.2-0.5 mm protrusion with >=20% compression: acceptable
-        r.classList.add('ok'); rated++;
-        if(comp>accC){accC=comp; accBest=i;}
+      if(comp<=1e-9 || protR<=1e-9) return;              // a flush 0% size, or no protrusion, is never favored
+      if(protR>=PROT_GOOD-1e-9 && protR<=PROT_MAX+1e-9){  // 0.5-1.0 mm protrusion: good
+        good.push({i, prot:protR, comp});
+      } else if(protR>=PROT_MIN-1e-9 && protR<PROT_GOOD-1e-9 && comp>=COMP_LOWPROT-1e-9){ // 0.2-0.5 mm with >=20% compression: acceptable
+        acc.push({i, prot:protR, comp});
       } else {
-        fallback.push({i,comp});                          // positive but shallow / under-compressed — only if nothing better
+        fallback.push({i, prot:protR, comp});            // shallow, under-compressed, or just past the 1.0 mm ceiling
       }
     }
   });
   let firstFit=-1;
   if(hasH){
-    let rec = goodBest>=0 ? goodBest : accBest;           // prefer the good band; among it, most compression
-    if(rec<0 && fallback.length){                         // nothing in the rated bands: consider any size with positive compression & protrusion
-      fallback.forEach(f=>{ rowsEl.children[f.i].classList.add('ok'); rated++; });
-      rec = fallback.reduce((b,f)=>f.comp>b.comp?f:b).i;
+    const wide = W>4;                                      // wider sacs seat better with more neck protrusion (~1 mm), so target that
+    const distT = f => Math.abs(f.prot-PROT_MAX);          // distance from the 1.0 mm target (wide sacs)
+    // rank the in-band fits: good band before acceptable; within a band, wide → closest to ~1 mm, narrow → most compression
+    const bandFits = good.map(f=>({...f,tier:0})).concat(acc.map(f=>({...f,tier:1})));
+    bandFits.sort((a,b)=>{
+      if(a.tier!==b.tier) return a.tier-b.tier;
+      if(wide){ const d=distT(a)-distT(b); if(Math.abs(d)>1e-9) return d; return b.comp-a.comp; }
+      return b.comp-a.comp;
+    });
+    let primary=-1;
+    if(wide && (good.length||acc.length||fallback.length)){ // wide: the lead pick targets ~1 mm even if that means a slightly-over-ceiling size
+      const all=good.concat(acc,fallback), T=PROT_MAX;
+      let pick=all[0];
+      for(const f of all){ const d=Math.abs(f.prot-T), db=Math.abs(pick.prot-T); if(d<db-1e-9 || (Math.abs(d-db)<1e-9 && f.comp>pick.comp)) pick=f; }
+      primary=pick.i;
+    } else if(bandFits.length) primary=bandFits[0].i;      // narrow: best band fit (most compression)
+    else if(fallback.length){                              // nothing in the bands: offer the size closest to the 0.5-1.0 mm window
+      const score=f=> f.prot<PROT_GOOD ? (PROT_GOOD-f.prot) : (f.prot-PROT_MAX);
+      let pick=fallback[0];
+      for(const f of fallback){ const s=score(f), sb=score(pick); if(s<sb-1e-9 || (Math.abs(s-sb)<1e-9 && f.comp>pick.comp)) pick=f; }
+      primary=pick.i;
     }
-    if(rec>=0){
-      rowsEl.children[rec].classList.add('rec'); firstFit=rec;
-      const dv=devices[rec], comp=Math.round((dv.b-W)/dv.b*100), pr=heightAt(dv,W)-H;
-      matchInfo.textContent='Consider '+dv.b.toFixed(1)+'\u00d7'+dv.c.toFixed(1)+' \u00b7 '+comp+'% width compression \u00b7 +'+fmt(pr)+' mm protrusion into neck'+(rated>1?' ('+rated+' options)':'');
+    // recommend up to 3: the lead pick, then the next best in-band fits
+    const recs=[];
+    if(primary>=0) recs.push(primary);
+    for(const f of bandFits){ if(recs.length>=3) break; if(!recs.includes(f.i)) recs.push(f.i); }
+    recs.forEach((idx,k)=>{ const row=rowsEl.children[idx]; row.classList.add('rec'); if(k===0) row.classList.add('primary'); });
+    firstFit = primary;
+    if(primary>=0){
+      const dv=devices[primary], comp=Math.round((dv.b-W)/dv.b*100), pr=heightAt(dv,W)-H;
+      const base='Consider '+dv.b.toFixed(1)+'\u00d7'+dv.c.toFixed(1)+' \u00b7 '+comp+'% width compression \u00b7 +'+fmt(pr)+' mm protrusion into neck';
+      matchInfo.innerHTML = pr>1.5 ? base+' \u00b7 <span style="color:var(--warn)">protrusion may be too high!</span>' : base;
     }
     else matchInfo.textContent= reach>0 ? 'No size with positive compression and protrusion' : 'No device reaches this width';
   } else {
