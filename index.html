@@ -48,8 +48,8 @@ h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-
 /* matcher */
 .matcher{display:flex; align-items:center; gap:10px; flex-wrap:wrap;
   padding:10px 8px 12px; border-bottom:1px solid var(--line); margin-bottom:8px;}
-.matcher .ml{font-weight:600; font-size:14px;}
-.matcher label{display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--muted);}
+.matcher .ml{font-weight:600; font-size:16px;}
+.matcher label{display:inline-flex; align-items:center; gap:6px; font-size:14px; color:var(--muted);}
 .matcher input[type=number]{width:76px; padding:6px 8px; border:1px solid var(--line);
   border-radius:7px; background:var(--bg); color:var(--ink); font-size:14px;
   font-variant-numeric:tabular-nums; -moz-appearance:textfield;}
@@ -59,7 +59,7 @@ h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-
 .matcher button{padding:6px 12px; border:1px solid var(--line); background:var(--surface);
   color:var(--muted); border-radius:7px; font-size:13px; cursor:pointer;}
 .matcher button:hover{color:var(--ink);}
-#match-info{font-size:13.5px; color:var(--teal-ink); font-weight:600; flex-basis:100%; text-align:left; margin-top:2px;}
+#match-info{font-size:15px; color:var(--teal-ink); font-weight:600; flex-basis:100%; text-align:left; margin-top:2px;}
 .hint{padding:0 8px 10px; color:var(--faint); font-size:13px; text-align:left;}
 
 /* rows */
@@ -109,8 +109,9 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px var(--tea
 .focus-panel{padding:12px;}
 .fp-head{display:flex; align-items:flex-start; gap:8px; flex-wrap:wrap; margin-bottom:5px;}
 .fp-titles{display:flex; flex-direction:column;}
-.fp-title{font-weight:600; font-variant-numeric:tabular-nums;}
-.fp-aneu{font-weight:600; font-size:13px; color:#e5484d; font-variant-numeric:tabular-nums; margin-top:1px;}
+.fp-title{font-weight:600; font-size:16px; font-variant-numeric:tabular-nums;}
+.fp-aneu{font-weight:600; font-size:16px; color:#e5484d; font-variant-numeric:tabular-nums; margin-top:1px;}
+.fp-titles .hlab{display:inline-block; min-width:82px;}
 .fp-sub{font-size:11.5px; color:var(--faint); margin-bottom:6px; line-height:1.4;}
 #glyph{display:block; width:100%; max-width:208px; margin:0 auto 4px;}
 #glyph .dim{stroke:var(--faint); stroke-width:1;}
@@ -175,7 +176,7 @@ footer a:hover{text-decoration:underline;}
       <div class="matcher">
         <span class="ml">Match aneurysm</span>
         <label>width <input id="in-w" type="number" step="0.1" min="0" placeholder="mm" aria-label="Aneurysm width in millimetres"></label>
-        <label>height <input id="in-h" type="number" step="0.1" min="0" placeholder="mm" aria-label="Aneurysm height in millimetres"></label>
+        <label>height (dome&ndash;neck) <input id="in-h" type="number" step="0.1" min="0" placeholder="mm" aria-label="Aneurysm dome-to-neck height in millimetres"></label>
         <button id="clear" type="button">Clear</button>
         <span id="match-info"></span>
       </div>
@@ -189,7 +190,7 @@ footer a:hover{text-decoration:underline;}
       <div class="row head" aria-hidden="true">
         <span class="colhead">Artisse device</span>
         <span class="colhead">Compression</span>
-        <span class="colhead r">Aneurysm width</span>
+        <span class="colhead r">Compressed Artisse width</span>
         <span class="colhead r">Artisse width compression</span>
         <span class="colhead r">Aneurysm height</span>
         <span class="colhead r">Compressed Artisse height</span>
@@ -207,10 +208,10 @@ footer a:hover{text-decoration:underline;}
         <span class="badge" id="m-ext">extrapolated below rated max</span>
       </div>
       <div class="metrics">
-        <div class="mc"><div class="l">Deployed width</div><div class="v" id="m-w"></div></div>
+        <div class="mc"><div class="l">Compressed Artisse width</div><div class="v" id="m-w"></div></div>
         <div class="mc"><div class="l">Artisse width compression</div><div class="v" id="m-comp"></div></div>
         <div class="mc"><div class="l">Width oversized vs. aneurysm</div><div class="v" id="m-over"></div></div>
-        <div class="mc"><div class="l">Compressed height</div><div class="v" id="m-h"></div></div>
+        <div class="mc"><div class="l">Compressed Artisse height</div><div class="v" id="m-h"></div></div>
       </div>
       <div class="fp-sub">solid = compressed device · dashed = device in air · <span style="color:#e5484d">red = aneurysm sac</span> · dots = markers (schematic)</div>
       <svg id="glyph" viewBox="0 0 150 176" role="img" aria-label="Device cross-section in an aneurysm, compressed shape versus dashed nominal shape">
@@ -461,9 +462,10 @@ function updateFocus(){
   const dev=devices[active], r=rowsEl.children[active];
   const w=widthOf(r), h=heightAt(dev,w), ext=w<dev.a-EPS;
   const matching=(targetW!=null && targetH!=null);
-  set('m-dev','Artisse '+dev.b.toFixed(1)+' \u00d7 '+dev.c.toFixed(1)+' mm'+(matching?' placed in':''));
+  const devDim=dev.b.toFixed(1)+' \u00d7 '+dev.c.toFixed(1)+' mm';
+  document.getElementById('m-dev').innerHTML='<span class="hlab">Artisse</span><span class="hdim">'+devDim+(matching?' placed in':'')+'</span>';
   const ma=document.getElementById('m-aneu');
-  if(matching){ ma.textContent='Aneurysm '+fmt(targetW)+' \u00d7 '+fmt(targetH)+' mm'; ma.style.display=''; }
+  if(matching){ ma.innerHTML='<span class="hlab">Aneurysm</span><span class="hdim">'+fmt(targetW)+' \u00d7 '+fmt(targetH)+' mm</span>'; ma.style.display=''; }
   else { ma.style.display='none'; }
   set('m-w',fmt(w)+' mm'); set('m-h',fmt(h)+' mm');
   set('m-comp',Math.round((dev.b-w)/dev.b*100)+'%');
@@ -563,11 +565,11 @@ function runMatch(){
     if(rec>=0){
       rowsEl.children[rec].classList.add('rec'); firstFit=rec;
       const dv=devices[rec], comp=Math.round((dv.b-W)/dv.b*100), pr=heightAt(dv,W)-H, n=fits+oks;
-      matchInfo.textContent='Consider '+dv.b.toFixed(1)+'\u00d7'+dv.c.toFixed(1)+' \u00b7 '+comp+'% compression \u00b7 +'+fmt(pr)+' mm into neck'+(n>1?' ('+n+' options)':'');
+      matchInfo.textContent='Consider '+dv.b.toFixed(1)+'\u00d7'+dv.c.toFixed(1)+' \u00b7 '+comp+'% width compression \u00b7 +'+fmt(pr)+' mm protrusion into neck'+(n>1?' ('+n+' options)':'');
     }
     else if(best>=0){ rowsEl.children[best].classList.add('ok'); firstFit=best;
       const bp=heightAt(devices[best],W)-H;
-      const desc=bp>=0? '+'+fmt(bp)+' mm into neck' : fmt(-bp)+' mm short of neck';
+      const desc=bp>=0? '+'+fmt(bp)+' mm protrusion into neck' : fmt(-bp)+' mm short of neck';
       matchInfo.textContent='Closest: '+devices[best].b.toFixed(1)+'\u00d7'+devices[best].c.toFixed(1)+' ('+desc+')'; }
     else if(reach>0) matchInfo.textContent='No size keeps \u22650.5 mm oversizing at this width';
     else matchInfo.textContent='No device reaches this width';
