@@ -64,7 +64,7 @@ h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-
   color:var(--muted); border-radius:7px; font-size:13px; cursor:pointer;}
 .matcher button:hover{color:var(--ink);}
 #match-info{font-size:15px; color:var(--teal-ink); font-weight:600; flex-basis:100%; text-align:left; margin-top:2px;}
-.hint{padding:0 8px 10px; color:var(--faint); font-size:13px; text-align:left;}
+.hint{padding:0 8px 12px; color:var(--ink); font-size:15px; line-height:1.5; text-align:left;}
 
 /* rows */
 .row{display:grid; grid-template-columns:104px minmax(0,1fr) 70px 78px 70px 92px; align-items:center;
@@ -122,8 +122,10 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px var(--tea
 #glyph .rqmark{fill:var(--ink); stroke:var(--surface); stroke-width:.7;}
 .metrics{display:grid; grid-template-columns:1fr 1fr; gap:6px;}
 .mc{background:var(--bg); border-radius:8px; padding:6px 9px;}
+.mc.wide{grid-column:1 / -1;}
 .mc .l{font-size:10.5px; color:var(--muted);}
 .mc .v{font-size:18px; font-weight:600; margin-top:1px; font-variant-numeric:tabular-nums;}
+.mc .v .vsub{font-size:12px; font-weight:400; color:var(--muted); margin-left:7px; font-variant-numeric:tabular-nums;}
 .badge{display:none; align-items:center; gap:5px; font-size:11.5px; font-weight:600;
   color:var(--muted); background:rgba(120,130,145,.14); padding:3px 8px; border-radius:7px;}
 .badge svg{width:13px; height:13px;}
@@ -167,7 +169,7 @@ footer a:hover{text-decoration:underline;}
   <header>
     <div class="head-top">
       <p class="eyebrow">Intrasaccular sizing · Artisse</p>
-      <span class="version" title="build">v202606242334</span>
+      <span class="version" title="build">v202606260111</span>
     </div>
     <h1>Compressed-height explorer</h1>
     <p class="lede">See how each Artisse device's deployed height changes with compression, or enter a
@@ -184,11 +186,9 @@ footer a:hover{text-decoration:underline;}
         <button id="clear" type="button">Clear</button>
         <span id="match-info"></span>
       </div>
-      <p class="hint">Move a slider manually to explore a device, or enter an aneurysm width and
-        dome&ndash;neck height to get a recommended size. Up to three suitable devices are marked with a
-        star (<span style="color:var(--teal); font-weight:700">&#9733;</span>); the lead pick is named in
-        <i>Consider&hellip;</i> above. The tick on each slider is that device's rated maximum sac width &mdash;
-        left of it is over-compressed (extrapolated). How sizes are chosen is detailed in the technical notes below.</p>
+      <p class="hint">Move a slider manually to explore a device. Enter an aneurysm width and height
+        to get the best recommended size. Up to three suitable devices are marked with a
+        star (<span style="color:var(--teal); font-weight:700">&#9733;</span>).</p>
       <div class="table-scroll"><div class="table">
       <div class="row head" aria-hidden="true">
         <span class="colhead">Artisse device</span>
@@ -212,9 +212,8 @@ footer a:hover{text-decoration:underline;}
       </div>
       <div class="metrics">
         <div class="mc"><div class="l">Compressed Artisse width</div><div class="v" id="m-w"></div></div>
-        <div class="mc"><div class="l">Artisse width compression</div><div class="v" id="m-comp"></div></div>
-        <div class="mc"><div class="l">Width oversized vs. aneurysm</div><div class="v" id="m-over"></div></div>
         <div class="mc"><div class="l">Compressed Artisse height</div><div class="v" id="m-h"></div></div>
+        <div class="mc wide"><div class="l">Artisse width compression</div><div class="v" id="m-comp"></div></div>
       </div>
       <div class="fp-sub">solid = compressed device · dashed = device in air · <span style="color:#e5484d">red = aneurysm sac</span> · dots = markers (schematic)</div>
       <svg id="glyph" viewBox="0 0 150 176" role="img" aria-label="Device cross-section in an aneurysm, compressed shape versus dashed nominal shape">
@@ -477,9 +476,8 @@ function updateFocus(){
   if(matching){ ma.innerHTML='<span class="hlab">Aneurysm</span><span class="hdim">'+fmt(targetW)+' \u00d7 '+fmt(targetH)+' mm</span>'; ma.style.display=''; }
   else { ma.style.display='none'; }
   set('m-w',fmt(w)+' mm'); set('m-h',fmt(h)+' mm');
-  set('m-comp',Math.round((dev.b-w)/dev.b*100)+'%');
   const oversz=(targetW!=null)?(dev.b-targetW):(dev.b-w);
-  set('m-over',(oversz>=0?'+':'\u2212')+fmt(Math.abs(oversz))+' mm');
+  document.getElementById('m-comp').innerHTML=Math.round((dev.b-w)/dev.b*100)+'%<span class="vsub">(width oversized by '+fmt(Math.abs(oversz))+' mm)</span>';
   document.getElementById('m-ext').style.display=ext?'inline-flex':'none';
   const rx=w*SC/2, ry=h*SC/2, rrx=dev.b*SC/2, rry=dev.c*SC/2;
   const g=document.getElementById('glyph');
