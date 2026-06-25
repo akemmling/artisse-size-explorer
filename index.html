@@ -65,17 +65,6 @@ h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-
 .matcher button:hover{color:var(--ink);}
 #match-info{font-size:15px; color:var(--teal-ink); font-weight:600; flex-basis:100%; text-align:left; margin-top:2px;}
 .hint{padding:0 8px 12px; color:var(--ink); font-size:15px; line-height:1.5; text-align:left;}
-.signup{padding:14px 16px; margin:30px 0 0; display:flex; flex-direction:column; gap:10px;}
-.signup-txt{font-size:14px; line-height:1.5; color:var(--ink);}
-.signup-row{display:flex; gap:8px; flex-wrap:wrap;}
-.signup-row input{flex:1 1 220px; min-width:0; padding:9px 11px; border:1px solid var(--line);
-  border-radius:8px; background:var(--bg); color:var(--ink); font-size:14px;}
-.signup-row input:focus{outline:2px solid var(--teal-soft); border-color:var(--teal);}
-.signup-row button{padding:9px 18px; border:1px solid var(--teal); background:var(--teal); color:#fff;
-  border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; white-space:nowrap;}
-.signup-row button:hover{background:var(--teal-ink); border-color:var(--teal-ink);}
-.signup-note{font-size:12px; color:var(--muted);}
-@media (prefers-color-scheme:dark){ .signup-row button{color:#0e1116;} }
 
 /* rows */
 .row{display:grid; grid-template-columns:104px minmax(0,1fr) 70px 78px 70px 92px; align-items:center;
@@ -180,7 +169,7 @@ footer a:hover{text-decoration:underline;}
   <header>
     <div class="head-top">
       <p class="eyebrow">Intrasaccular sizing · Artisse</p>
-      <span class="version" title="build">v202606260129</span>
+      <span class="version" title="build">v202606260136</span>
     </div>
     <h1>Compressed-height explorer</h1>
     <p class="lede">See how each Artisse device's deployed height changes with compression, or enter a
@@ -361,17 +350,6 @@ footer a:hover{text-decoration:underline;}
     </details>
   </section>
 
-  <section class="card signup" aria-label="Stay in touch">
-    <div class="signup-txt"><b>Using this in practice?</b> Leave your email and I'll keep you posted on
-      updates &mdash; and I'd value knowing who finds it useful.</div>
-    <div class="signup-row">
-      <input id="su-email" type="email" autocomplete="email" placeholder="you@hospital.org" aria-label="Your email">
-      <button id="su-send" type="button">Email the author</button>
-    </div>
-    <div class="signup-note">Opens your own mail app with a pre-filled message to the author &mdash; no cookies,
-      no tracking, no third-party service.</div>
-  </section>
-
   <footer>
     <b>About the values:</b> Only the two endpoints per device come from the Medtronic Artisse sizing
     sheet (CA-CTL-0677-E) &mdash; the tick = rated max average aneurysm width [a] (height = published
@@ -386,8 +364,8 @@ footer a:hover{text-decoration:underline;}
     fully self-contained and works offline.<br><br>
     <b>Privacy:</b> this page stores no cookies and collects no personal data. Anonymous, cookieless usage
     counts are recorded via GoatCounter (privacy-friendly analytics &mdash; no consent banner required) so the
-    author can gauge how widely the tool is used. If you choose to email the author, your message and address
-    are used only to reply and to send occasional updates, and are never shared.<br><br>
+    author can gauge how widely the tool is used. If you email the author, your message and address are used
+    only to reply, and are never shared.<br><br>
     <span class="byline">Created by Prof. Dr. André Kemmling, Clinic for Neuroradiology, University Hospital
     Marburg (UKGM), Germany &middot; for research and educational use &middot;
     &copy; 2026 André Kemmling. All rights reserved. &middot;
@@ -650,15 +628,6 @@ devices.forEach(dev=>{
 [...rowsEl.children].forEach(updateRow); highlight(); updateFocus();
 requestAnimationFrame(positionTicks);
 window.addEventListener('resize',positionTicks);
-
-const suBtn=document.getElementById('su-send');
-if(suBtn) suBtn.addEventListener('click',()=>{
-  const e=(document.getElementById('su-email').value||'').trim();
-  const subj=encodeURIComponent('Artisse Compressed-Height Explorer \u2014 keep me posted');
-  const body=encodeURIComponent('Hi Andr\u00e9,\n\nI use the Artisse Compressed-Height Explorer'+
-    (e?(' \u2014 please add '+e+' to your update list'):'')+'.\n\n[your note here]\n');
-  window.location.href='mailto:kemmling@uni-marburg.de?subject='+subj+'&body='+body;
-});
 </script>
 <!-- Anonymous, cookieless usage analytics via GoatCounter (no consent banner needed; your own/localhost visits
      are not counted). Claim the code "akemmling" at https://www.goatcounter.com to view the dashboard.
