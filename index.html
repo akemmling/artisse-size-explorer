@@ -131,8 +131,10 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px var(--tea
 .badge svg{width:13px; height:13px;}
 
 /* explanation */
-.explain{margin-top:34px;}
-.explain h2{font-size:13px; font-family:ui-monospace,"SF Mono",Menlo,monospace; letter-spacing:.16em;
+.blurb{margin:26px 2px 0; max-width:74ch; font-size:15px; line-height:1.6; color:var(--muted);}
+.blurb a{color:var(--teal-ink); text-decoration:none;}
+.blurb a:hover{text-decoration:underline;}
+.explain{margin-top:34px;}.explain h2{font-size:13px; font-family:ui-monospace,"SF Mono",Menlo,monospace; letter-spacing:.16em;
   text-transform:uppercase; color:var(--teal); margin:0 0 18px; font-weight:600;}
 .explain h3{font-size:16px; margin:26px 0 8px; font-weight:600;}
 .explain p{margin:0 0 12px; color:var(--ink);}
@@ -169,7 +171,7 @@ footer a:hover{text-decoration:underline;}
   <header>
     <div class="head-top">
       <p class="eyebrow">Intrasaccular sizing · Artisse</p>
-      <span class="version" title="build">v202606260136</span>
+      <span class="version" title="build">v202606260156</span>
     </div>
     <h1>Compressed-height explorer</h1>
     <p class="lede">See how each Artisse device's deployed height changes with compression, or enter a
@@ -240,6 +242,12 @@ footer a:hover{text-decoration:underline;}
       <div class="neck-note" id="m-neck" style="display:none"></div>
     </aside>
   </div>
+
+  <p class="blurb">This Artisse size explorer turns the
+    <a href="https://www.medtronic.com/content/dam/medtronic-wide/public/western-europe/products/neurological/neurovascular/artisse-wallchart-en-gb.pdf" target="_blank" rel="noopener">static Medtronic sizing chart</a>
+    into a dynamic one. A static table can only print a handful of fixed compression/height pairs; it cannot
+    list every Artisse compression/height combination &mdash; a dynamic table can.
+    <a href="mailto:kemmling@uni-marburg.de?subject=Artisse%20size%20explorer%20feedback">Critique and feedback welcome.</a></p>
 
   <section class="explain">
     <h2>How the height is calculated</h2>
@@ -358,7 +366,8 @@ footer a:hover{text-decoration:underline;}
     model; they are not Medtronic figures and have not been clinically verified. The device silhouette and
     radiopaque markers are schematic. Always confirm sizing against the current Instructions for Use and
     your own measurements. This tool is not affiliated with, sponsored, or endorsed by Medtronic; Artisse
-    is a trademark of Medtronic.<br><br>
+    is a trademark of Medtronic. Official reference chart:
+    <a href="https://www.medtronic.com/content/dam/medtronic-wide/public/western-europe/products/neurological/neurovascular/artisse-wallchart-en-gb.pdf" target="_blank" rel="noopener">Medtronic Artisse wallchart (EN-GB, PDF)</a>.<br><br>
     <b>Run it as an app:</b> in Safari choose File &#9656; Add to Dock; or in Chrome use the &#8942; menu
     &#9656; Cast, Save and Share &#9656; Create Shortcut and tick &ldquo;Open as window.&rdquo; The file is
     fully self-contained and works offline.<br><br>
