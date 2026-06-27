@@ -136,6 +136,7 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px var(--tea
 .blurb a:hover{text-decoration:underline;}
 .allfig{margin:18px 0 0; padding:14px 14px 6px;}
 .allfig-cap{font-size:13px; line-height:1.55; color:var(--muted); margin:0 0 8px; max-width:78ch;}
+.fig-intro{font-size:15px; line-height:1.6; color:var(--ink); margin:2px 0 14px; max-width:76ch;}
 .allfig-cap .lg-air{color:var(--ink); white-space:nowrap;}
 .allfig-cap .lg-comp{color:var(--ink); white-space:nowrap;}
 #allplot{width:100%; height:auto; display:block;}
@@ -185,7 +186,7 @@ footer a:hover{text-decoration:underline;}
   <header>
     <div class="head-top">
       <p class="eyebrow">Intrasaccular sizing &middot; Artisse</p>
-      <span class="version" title="build">v202606271613</span>
+      <span class="version" title="build">v202606271649</span>
     </div>
     <h1>Background &amp; methods</h1>
     <p class="lede">The braid model, the data provenance, and a width&ndash;height map of every Artisse size
@@ -194,6 +195,13 @@ footer a:hover{text-decoration:underline;}
     <div class="caliper"><span class="bar"></span></div>
   </header>
 
+  <section class="explain" aria-label="Overview">
+    <h2>Every Artisse size at a glance</h2>
+    <p class="fig-intro">Each Artisse size settles at a different compressed height as it is squeezed into a
+      narrower aneurysm. This map plots that width-to-height relationship for all twenty devices at once &mdash;
+      the continuum a fixed printed table can never list in full. Every curve is reconstructed from just the two
+      published Medtronic shapes (the dots on each line); exactly how that reconstruction works is set out step
+      by step below.</p>
   <figure class="allfig card">
     <figcaption class="allfig-cap"><b>Every Artisse size as one width&ndash;height curve.</b> Each
       <b>colour</b> is one device; the line is its compressed-height&ndash;vs&ndash;width relationship from the
@@ -203,6 +211,7 @@ footer a:hover{text-decoration:underline;}
       extrapolated, including the over-compression range below the rated width.</figcaption>
     <svg id="allplot" role="img" aria-label="Width versus compressed-height curves for all Artisse devices"></svg>
   </figure>
+  </section>
 
   <section class="explain">
     <h2>How the height is calculated</h2>
