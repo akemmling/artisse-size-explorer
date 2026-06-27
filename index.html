@@ -50,12 +50,12 @@ h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-
 .table{min-width:520px;}
 
 /* matcher */
-.matcher{display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-  padding:10px 8px 12px; border-bottom:1px solid var(--line); margin-bottom:8px;}
-.matcher .ml{font-weight:600; font-size:16px;}
-.matcher label{display:inline-flex; align-items:center; gap:6px; font-size:14px; color:var(--muted);}
-.matcher input[type=number]{width:76px; padding:6px 8px; border:1px solid var(--line);
-  border-radius:7px; background:var(--bg); color:var(--ink); font-size:14px;
+.matcher{display:flex; align-items:center; gap:11px; flex-wrap:wrap;
+  padding:14px 8px 14px; border-bottom:1px solid var(--line); margin-bottom:8px;}
+.matcher .ml{font-weight:600; font-size:19px;}
+.matcher label{display:inline-flex; align-items:center; gap:6px; font-size:16px; color:var(--muted);}
+.matcher input[type=number]{width:86px; padding:7px 10px; border:1px solid var(--line);
+  border-radius:7px; background:var(--bg); color:var(--ink); font-size:16px;
   font-variant-numeric:tabular-nums; -moz-appearance:textfield;}
 .matcher input[type=number]::-webkit-outer-spin-button,
 .matcher input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none; margin:0;}
@@ -63,7 +63,7 @@ h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-
 .matcher button{padding:6px 12px; border:1px solid var(--line); background:var(--surface);
   color:var(--muted); border-radius:7px; font-size:13px; cursor:pointer;}
 .matcher button:hover{color:var(--ink);}
-#match-info{font-size:15px; color:var(--teal-ink); font-weight:600; flex-basis:100%; text-align:left; margin-top:2px;}
+#match-info{font-size:18px; color:var(--teal-ink); font-weight:600; flex-basis:100%; text-align:left; margin-top:4px;}
 .hint{padding:0 8px 12px; color:var(--ink); font-size:15px; line-height:1.5; text-align:left;}
 
 /* rows */
@@ -134,6 +134,20 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px var(--tea
 .blurb{margin:26px 2px 0; max-width:74ch; font-size:15px; line-height:1.6; color:var(--muted);}
 .blurb a{color:var(--teal-ink); text-decoration:none;}
 .blurb a:hover{text-decoration:underline;}
+.allfig{margin:18px 0 0; padding:14px 14px 6px;}
+.allfig-cap{font-size:13px; line-height:1.55; color:var(--muted); margin:0 0 8px; max-width:78ch;}
+.allfig-cap .lg-air{color:var(--ink); white-space:nowrap;}
+.allfig-cap .lg-comp{color:var(--ink); white-space:nowrap;}
+#allplot{width:100%; height:auto; display:block;}
+#allplot .grid{stroke:var(--line); stroke-width:1;}
+#allplot .grid-min{stroke:var(--line); stroke-width:.5; opacity:.4;}
+#allplot .axt{fill:var(--muted); font-size:11px;}
+#allplot .axtitle{fill:var(--muted); font-size:12px; font-weight:600;}
+#allplot .cv{fill:none; stroke-width:1.5; opacity:.9;}
+#allplot .pt{stroke-width:1.4;}
+#allplot .pt.air{fill:var(--surface);}
+#background{scroll-margin-top:16px;}
+.note.disc{margin-top:18px; padding-top:14px; border-top:1px solid var(--line);}
 .explain{margin-top:34px;}.explain h2{font-size:13px; font-family:ui-monospace,"SF Mono",Menlo,monospace; letter-spacing:.16em;
   text-transform:uppercase; color:var(--teal); margin:0 0 18px; font-weight:600;}
 .explain h3{font-size:16px; margin:26px 0 8px; font-weight:600;}
@@ -171,11 +185,18 @@ footer a:hover{text-decoration:underline;}
   <header>
     <div class="head-top">
       <p class="eyebrow">Intrasaccular sizing · Artisse</p>
-      <span class="version" title="build">v202606260156</span>
+      <span class="version" title="build">v202606271613</span>
     </div>
     <h1>Compressed-height explorer</h1>
-    <p class="lede">See how each Artisse device's deployed height changes with compression, or enter a
-      measured aneurysm and let the tool flag every device whose compressed shape fits.</p>
+    <p class="lede">Move the slider to see how height changes with compression for each Artisse. Enter a
+      measured aneurysm and let the tool flag up to three devices (<span style="color:var(--teal); font-weight:700">&#9733;</span>)
+      where compressed shape probably fits (or choose your desired protrusion at the neck).</p>
+    <p class="blurb">This Artisse size explorer turns the
+      <a href="https://www.medtronic.com/content/dam/medtronic-wide/public/western-europe/products/neurological/neurovascular/artisse-wallchart-en-gb.pdf" target="_blank" rel="noopener">static Medtronic sizing chart</a>
+      into a dynamic one. A static table can only print a handful of fixed compression/height pairs; it cannot
+      list every Artisse compression/height combination &mdash; this dynamic table can (see
+      <a href="background.html">background info</a>).
+      <a href="mailto:kemmling@uni-marburg.de?subject=Artisse%20size%20explorer%20feedback">Critique and feedback welcome.</a></p>
     <div class="caliper"><span class="bar"></span></div>
   </header>
 
@@ -188,9 +209,6 @@ footer a:hover{text-decoration:underline;}
         <button id="clear" type="button">Clear</button>
         <span id="match-info"></span>
       </div>
-      <p class="hint">Move a slider manually to explore a device. Enter an aneurysm width and height
-        to get the best recommended size. Up to three suitable devices are marked with a
-        star (<span style="color:var(--teal); font-weight:700">&#9733;</span>).</p>
       <div class="table-scroll"><div class="table">
       <div class="row head" aria-hidden="true">
         <span class="colhead">Artisse device</span>
@@ -243,131 +261,7 @@ footer a:hover{text-decoration:underline;}
     </aside>
   </div>
 
-  <p class="blurb">This Artisse size explorer turns the
-    <a href="https://www.medtronic.com/content/dam/medtronic-wide/public/western-europe/products/neurological/neurovascular/artisse-wallchart-en-gb.pdf" target="_blank" rel="noopener">static Medtronic sizing chart</a>
-    into a dynamic one. A static table can only print a handful of fixed compression/height pairs; it cannot
-    list every Artisse compression/height combination &mdash; a dynamic table can.
-    <a href="mailto:kemmling@uni-marburg.de?subject=Artisse%20size%20explorer%20feedback">Critique and feedback welcome.</a></p>
-
-  <section class="explain">
-    <h2>How the height is calculated</h2>
-
-    <p class="step">01 — The two known points</p>
-    <h3>The sizing sheet gives only two shapes per device</h3>
-    <p>For every device the Medtronic sheet publishes the nominal in-air shape — width <b>b</b> and
-      height <b>c</b> — and one compressed shape: when the device is deployed in a sac of width
-      <b>a</b> (the maximum average aneurysm width), its height becomes <b>d</b>. Heights anywhere
-      between those two widths, and below <b>a</b>, are not published.</p>
-
-    <p class="step">02 — The model</p>
-    <h3>Braid filament-length conservation</h3>
-    <p>An Artisse device is a braided nitinol mesh. The wires don't stretch, so squeezing the device
-      narrower forces it taller — the total filament length is conserved. Treating the braid as a
-      scissor/pantograph mesh gives a Pythagorean relation between height <span class="mono">H</span>
-      and width <span class="mono">W</span>:</p>
-    <div class="eq">H&sup2; + &alpha;&sup2;&middot;W&sup2; = L&sup2;&nbsp;&nbsp;&nbsp;(constant)</div>
-    <p class="note">&alpha; is a shape constant set by the braid angle and crossing density; L is
-      proportional to the conserved filament length. A smaller W forces a larger H.</p>
-
-    <p class="step">03 — Fitting the curve</p>
-    <h3>&alpha; and L are solved from the two points</h3>
-    <p>Two known points fix the two unknowns exactly. Setting the in-air state equal to the compressed
-      state:</p>
-    <div class="eq">c&sup2; + &alpha;&sup2;&middot;b&sup2; = d&sup2; + &alpha;&sup2;&middot;a&sup2; = L&sup2;</div>
-    <div class="eq">&alpha;&sup2; = (d&sup2; &minus; c&sup2;) / (b&sup2; &minus; a&sup2;)        L&sup2; = c&sup2; + &alpha;&sup2;&middot;b&sup2;</div>
-    <p>Because <span class="mono">d &gt; c</span> and <span class="mono">b &gt; a</span>, &alpha;&sup2;
-      is always positive, and by construction the fitted curve passes exactly through both published
-      points.</p>
-
-    <p class="step">04 — Reading any width</p>
-    <h3>Height at an arbitrary aneurysm width</h3>
-    <div class="eq">H(w) = &radic;(L&sup2; &minus; &alpha;&sup2;&middot;w&sup2;)</div>
-    <p>At <span class="mono">w = a</span> this returns the published <b>d</b>; at
-      <span class="mono">w = b</span> it returns the in-air <b>c</b>; between them it falls smoothly,
-      and below <b>a</b> it rises — that rise is the over-compression extrapolation.</p>
-
-    <p class="step">05 — % compressed Artisse width</p>
-    <h3>The compression column</h3>
-    <p>This column reports how much narrower than nominal the Artisse device is at the current width,
-      as a percentage of its in-air width (radial compression):</p>
-    <div class="eq">% compressed = (b &minus; w) / b &times; 100%</div>
-    <p class="note">It reads 0% at nominal width <b>b</b> and rises as the device is squeezed; at the
-      rated max sac <b>a</b> it equals (b&minus;a)/b.</p>
-
-    <p class="step">06 — The &plusmn; deltas</p>
-    <h3>Over/under-sizing next to width and height</h3>
-    <p>The small figure under each width is the width <b>oversizing</b> — how much wider the nominal
-      device is than the sac it sits in, <span class="mono">b &minus; w</span>, always positive and
-      echoing the sheet's +1 / +1.5 / +2 guide. The figure under each height appears once you enter a
-      sac height: it is the <b>coverage delta</b>, <span class="mono">H(w) &minus; sac height</span> —
-      positive (teal) means the device stands taller than the dome (the IFU's neck-coverage condition),
-      negative (amber) means it would come up short.</p>
-
-    <p class="step">07 — Matching an aneurysm</p>
-    <h3>How sizes are recommended</h3>
-    <p>Entering a sac width sets every device's deployed width to that value (the braid conforms to the
-      cavity), so each row shows the height that device would take in that sac. Each device is then judged on two
-      things together &mdash; how far it protrudes into the neck (compressed height minus sac height) and how much
-      its width is compressed. A size is a candidate fit when protrusion is in the working range and width
-      compression is positive: a <b>good</b> fit protrudes <b>0.5&ndash;1.0&nbsp;mm</b>; an <b>acceptable</b> fit
-      protrudes a shallower <b>0.2&ndash;0.5&nbsp;mm</b>, allowed only when width compression reaches
-      <b>&ge;20%</b> to compensate. A flush 0%-compression size is never recommended (no radial apposition).</p>
-    <p>Up to <b>three</b> suitable devices are marked with a single star
-      (<span style="color:var(--teal); font-weight:700">&#9733;</span>); the lead pick &mdash; named in
-      <i>Consider&hellip;</i> &mdash; carries a slightly stronger highlight. For a narrow sac the lead pick is the
-      candidate with the <b>greatest width compression</b>. For a sac <b>wider than 4&nbsp;mm</b> the lead pick
-      instead targets the size whose protrusion lands closest to <b>&ge;1&nbsp;mm</b>, since a wider sac seats more
-      securely with a little more neck protrusion. Protrusion beyond <b>1.0&nbsp;mm</b> is not a good or acceptable
-      fit, but when nothing reaches the working range the single closest size with positive compression and
-      protrusion is still offered &mdash; even if it sits just past the ceiling; a lead pick protruding more than
-      <b>1.5&nbsp;mm</b> is flagged <span style="color:var(--warn)">protrusion may be too high</span>. Devices
-      narrower than the sac (which cannot reach it) are dimmed as undersized.</p>
-
-    <p class="step">08 — The slider scale</p>
-    <h3>Why thumb travel &ne; millimetres</h3>
-    <p>Each slider is normalized so the rated max <b>a</b> sits at the same 25% position on every row —
-      that's what lines the knobs up at rest. The fixed left quarter is the 0.5&nbsp;mm
-      over-compression zone (w from a&minus;0.5 to a); the right three-quarters is that device's
-      working range (w from a to b).</p>
-
-    <p class="step">09 — Caveats</p>
-    <h3>What to keep in mind</h3>
-    <ul class="lim">
-      <li>Only the two endpoints are real Medtronic data. Everything in between, and the entire
-        sub-[a] zone, is an engineering estimate.</li>
-      <li>The radiopaque markers in the graphic are schematic placeholders at the device poles for
-        illustration — not the true marker count or positions of the Artisse device.</li>
-      <li>The published <b>d</b> values are rounded to 0.1&nbsp;mm, so the fitted &alpha; is not
-        identical across the matrix (&asymp;1.13 for the smallest devices up to &asymp;1.35 for
-        8.0&nbsp;mm) — expected for a real, non-ideal braid.</li>
-      <li>Real devices have a compression floor where the mesh densifies and stops elongating, so the
-        deepest part of the over-compression zone is the least trustworthy.</li>
-      <li>Anything left of the tick is below the rated envelope and therefore off-label.</li>
-    </ul>
-
-    <details>
-      <summary>Fitted parameters per device</summary>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr>
-            <th>Device b&times;c</th><th>a</th><th>d</th><th>&alpha;</th><th>L</th><th>H at a&minus;0.5</th>
-          </tr></thead>
-          <tbody id="param-body"></tbody>
-        </table>
-      </div>
-    </details>
-  </section>
-
   <footer>
-    <b>About the values:</b> Only the two endpoints per device come from the Medtronic Artisse sizing
-    sheet (CA-CTL-0677-E) &mdash; the tick = rated max average aneurysm width [a] (height = published
-    compressed height [d]), and the slider's right end = nominal width [b] (height = in-air height [c]).
-    Everything in between, and the entire sub-[a] zone, are unvalidated estimates from a simplified braid
-    model; they are not Medtronic figures and have not been clinically verified. The device silhouette and
-    radiopaque markers are schematic. Always confirm sizing against the current Instructions for Use and
-    your own measurements. This tool is not affiliated with, sponsored, or endorsed by Medtronic; Artisse
-    is a trademark of Medtronic. Official reference chart:
-    <a href="https://www.medtronic.com/content/dam/medtronic-wide/public/western-europe/products/neurological/neurovascular/artisse-wallchart-en-gb.pdf" target="_blank" rel="noopener">Medtronic Artisse wallchart (EN-GB, PDF)</a>.<br><br>
     <b>Run it as an app:</b> in Safari choose File &#9656; Add to Dock; or in Chrome use the &#8942; menu
     &#9656; Cast, Save and Share &#9656; Create Shortcut and tick &ldquo;Open as window.&rdquo; The file is
     fully self-contained and works offline.<br><br>
@@ -623,16 +517,6 @@ function runMatch(){
 inW.addEventListener('input',runMatch);
 inH.addEventListener('input',runMatch);
 document.getElementById('clear').addEventListener('click',()=>{ inW.value=''; inH.value=''; resetDefault(); });
-
-const pb=document.getElementById('param-body');
-devices.forEach(dev=>{
-  const {aSq,L2}=fit(dev);
-  const tr=document.createElement('tr');
-  tr.innerHTML='<td>'+dev.b.toFixed(1)+' \u00d7 '+dev.c.toFixed(1)+'</td><td>'+dev.a.toFixed(1)+
-    '</td><td>'+dev.d.toFixed(1)+'</td><td>'+Math.sqrt(aSq).toFixed(3)+'</td><td>'+
-    Math.sqrt(L2).toFixed(2)+'</td><td>'+heightAt(dev,dev.a-EXT).toFixed(2)+'</td>';
-  pb.appendChild(tr);
-});
 
 [...rowsEl.children].forEach(updateRow); highlight(); updateFocus();
 requestAnimationFrame(positionTicks);

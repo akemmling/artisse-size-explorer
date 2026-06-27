@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artisse Compressed-Height Explorer &mdash; Background &amp; methods</title>
+<style>
+:root{
+  --bg:#eef0f3; --surface:#ffffff; --ink:#0d1b2a; --muted:#5a6473; --faint:#9aa2b1;
+  --line:#dfe3ea; --teal:#0b7a73; --teal-ink:#075e58; --teal-soft:#d7eeeb;
+  --warn:#9a5b00; --warn-soft:#f7ead2;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0e1116; --surface:#161a21; --ink:#e8ecf2; --muted:#97a0b0; --faint:#5e6776;
+    --line:#262c36; --teal:#34c3b6; --teal-ink:#5fd6cb; --teal-soft:#10302d;
+    --warn:#e0a350; --warn-soft:#3a2c14;
+  }
+}
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;
+  font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,"SF Mono","SFMono-Regular",Menlo,monospace;}
+.wrap{max-width:1100px; margin:0 auto; padding:40px 24px 64px;}
+
+.eyebrow{font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:15px; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--teal-ink); font-weight:600; margin:0 0 11px;}
+.head-top{display:flex; justify-content:space-between; align-items:baseline; gap:12px;}
+.head-top .eyebrow{margin:0 0 11px;}
+.version{font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.04em;
+  color:var(--faint); white-space:nowrap; font-weight:500;}
+h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-weight:600;}
+.lede{color:var(--muted); margin:0; max-width:62ch;}
+.caliper{display:flex; align-items:center; margin:22px 0 28px; color:var(--faint);}
+.caliper::before,.caliper::after{content:""; width:7px; height:7px; border:1px solid currentColor; border-radius:50%;}
+.caliper .bar{flex:1; height:1px; background:currentColor; opacity:.5;}
+
+.app{display:grid; grid-template-columns:1fr; gap:18px;}
+@media (min-width:1024px){
+  .app{grid-template-columns:1fr 330px; grid-template-areas:"rows focus"; align-items:start;}
+  .rows-panel{grid-area:rows;} .focus-panel{grid-area:focus; position:sticky; top:16px;}
+}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:14px;}
+.rows-panel{padding:8px 10px;}
+.table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+.table{min-width:520px;}
+
+/* matcher */
+.matcher{display:flex; align-items:center; gap:11px; flex-wrap:wrap;
+  padding:14px 8px 14px; border-bottom:1px solid var(--line); margin-bottom:8px;}
+.matcher .ml{font-weight:600; font-size:19px;}
+.matcher label{display:inline-flex; align-items:center; gap:6px; font-size:16px; color:var(--muted);}
+.matcher input[type=number]{width:86px; padding:7px 10px; border:1px solid var(--line);
+  border-radius:7px; background:var(--bg); color:var(--ink); font-size:16px;
+  font-variant-numeric:tabular-nums; -moz-appearance:textfield;}
+.matcher input[type=number]::-webkit-outer-spin-button,
+.matcher input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none; margin:0;}
+.matcher input:focus{outline:2px solid var(--teal-soft); border-color:var(--teal);}
+.matcher button{padding:6px 12px; border:1px solid var(--line); background:var(--surface);
+  color:var(--muted); border-radius:7px; font-size:13px; cursor:pointer;}
+.matcher button:hover{color:var(--ink);}
+#match-info{font-size:18px; color:var(--teal-ink); font-weight:600; flex-basis:100%; text-align:left; margin-top:4px;}
+.hint{padding:0 8px 12px; color:var(--ink); font-size:15px; line-height:1.5; text-align:left;}
+
+/* rows */
+.row{display:grid; grid-template-columns:104px minmax(0,1fr) 70px 78px 70px 92px; align-items:center;
+  gap:9px; padding:5px 10px; border-radius:9px; cursor:pointer; transition:opacity .12s;}
+.row:hover{background:color-mix(in srgb,var(--teal-soft) 50%, transparent);}
+.row.active{background:var(--teal-soft);}
+.row.rec{background:color-mix(in srgb,var(--teal) 12%, transparent); box-shadow:inset 2px 0 0 var(--teal);}
+.row.rec.primary{background:color-mix(in srgb,var(--teal) 18%, transparent); box-shadow:inset 3px 0 0 var(--teal);}
+.row.rec .dev::before{content:"\2605 "; color:var(--teal); font-weight:700; font-size:12px; letter-spacing:-.5px;}
+.row.oor{opacity:.4;}
+.row.head{cursor:default; align-items:end; padding-bottom:6px;}
+.row.head:hover{background:none;}
+.colhead{font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:10.5px; line-height:1.25;
+  letter-spacing:.02em; text-transform:uppercase; color:var(--muted); font-weight:600; white-space:normal;
+  min-width:0; overflow-wrap:break-word;}
+.colhead.r{text-align:right;}
+.dev{font-weight:600; font-size:15px; color:var(--teal-ink); white-space:nowrap; font-variant-numeric:tabular-nums;}
+.sl{position:relative; display:flex; align-items:center;}
+#rows.matching .sl input{pointer-events:none;}
+.tick{position:absolute; top:50%; transform:translate(-50%,-50%); width:2px; height:13px;
+  background:var(--faint); border-radius:1px; pointer-events:none;}
+.num{display:flex; flex-direction:column; align-items:flex-end; align-self:start; gap:1px;
+  font-size:13px; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums;}
+.num.rc{color:var(--muted);}
+.num.w .val,.num.h .val,.num.ah .val{font-weight:600; font-size:15px;}
+.num .dlt{font-size:10.5px; line-height:1; height:11px; color:var(--muted);}
+.num .dlt.pos{color:var(--teal-ink);}
+.num .dlt.neg{color:var(--warn);}
+
+input[type=range]{-webkit-appearance:none; appearance:none; width:100%; height:16px;
+  background:transparent; cursor:pointer; margin:0;}
+input[type=range]::-webkit-slider-runnable-track{height:3px; background:var(--line); border-radius:2px;}
+input[type=range]::-moz-range-track{height:3px; background:var(--line); border-radius:2px;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; width:14px; height:14px;
+  margin-top:-5.5px; border-radius:50%; background:var(--surface); border:2px solid var(--teal);
+  box-shadow:0 1px 2px rgba(0,0,0,.18);}
+input[type=range]::-moz-range-thumb{width:14px; height:14px; border-radius:50%;
+  background:var(--surface); border:2px solid var(--teal); box-shadow:0 1px 2px rgba(0,0,0,.18);}
+input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px var(--teal-soft);}
+input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px var(--teal-soft);}
+
+/* focus panel */
+.focus-panel{padding:12px;}
+.fp-head{display:flex; align-items:flex-start; gap:8px; flex-wrap:wrap; margin-bottom:5px;}
+.fp-titles{display:flex; flex-direction:column;}
+.fp-title{font-weight:600; font-size:16px; font-variant-numeric:tabular-nums;}
+.fp-aneu{font-weight:600; font-size:16px; color:#e5484d; font-variant-numeric:tabular-nums; margin-top:1px;}
+.fp-titles .hlab{display:inline-block; min-width:82px;}
+.fp-sub{font-size:11.5px; color:var(--faint); margin-bottom:6px; line-height:1.4;}
+#glyph{display:block; width:100%; max-width:208px; margin:0 auto 4px;}
+#glyph .dim{stroke:var(--faint); stroke-width:1;}
+#glyph marker path{stroke:var(--faint); fill:none; stroke-width:1.3; stroke-linecap:round; stroke-linejoin:round;}
+#glyph #hlab,#glyph #wlab{fill:var(--ink); font-weight:600;
+  font-family:ui-monospace,"SF Mono",Menlo,monospace;}
+#glyph .rqmark{fill:var(--ink); stroke:var(--surface); stroke-width:.7;}
+.metrics{display:grid; grid-template-columns:1fr 1fr; gap:6px;}
+.mc{background:var(--bg); border-radius:8px; padding:6px 9px;}
+.mc.wide{grid-column:1 / -1;}
+.mc .l{font-size:10.5px; color:var(--muted);}
+.mc .v{font-size:18px; font-weight:600; margin-top:1px; font-variant-numeric:tabular-nums;}
+.mc .v .vsub{font-size:12px; font-weight:400; color:var(--muted); margin-left:7px; font-variant-numeric:tabular-nums;}
+.badge{display:none; align-items:center; gap:5px; font-size:11.5px; font-weight:600;
+  color:var(--muted); background:rgba(120,130,145,.14); padding:3px 8px; border-radius:7px;}
+.badge svg{width:13px; height:13px;}
+
+/* explanation */
+.blurb{margin:26px 2px 0; max-width:74ch; font-size:15px; line-height:1.6; color:var(--muted);}
+.blurb a{color:var(--teal-ink); text-decoration:none;}
+.blurb a:hover{text-decoration:underline;}
+.allfig{margin:18px 0 0; padding:14px 14px 6px;}
+.allfig-cap{font-size:13px; line-height:1.55; color:var(--muted); margin:0 0 8px; max-width:78ch;}
+.allfig-cap .lg-air{color:var(--ink); white-space:nowrap;}
+.allfig-cap .lg-comp{color:var(--ink); white-space:nowrap;}
+#allplot{width:100%; height:auto; display:block;}
+#allplot .grid{stroke:var(--line); stroke-width:1;}
+#allplot .grid-min{stroke:var(--line); stroke-width:.5; opacity:.4;}
+#allplot .axt{fill:var(--muted); font-size:11px;}
+#allplot .axtitle{fill:var(--muted); font-size:12px; font-weight:600;}
+#allplot .cv{fill:none; stroke-width:1.5; opacity:.9;}
+#allplot .pt{stroke-width:1.4;}
+#allplot .pt.air{fill:var(--surface);}
+#background{scroll-margin-top:16px;}
+.note.disc{margin-top:18px; padding-top:14px; border-top:1px solid var(--line);}
+.explain{margin-top:34px;}.explain h2{font-size:13px; font-family:ui-monospace,"SF Mono",Menlo,monospace; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--teal); margin:0 0 18px; font-weight:600;}
+.explain h3{font-size:16px; margin:26px 0 8px; font-weight:600;}
+.explain p{margin:0 0 12px; color:var(--ink);}
+.explain .step{font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:11px;
+  color:var(--faint); letter-spacing:.06em;}
+.eq{font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:15px; background:var(--surface);
+  border:1px solid var(--line); border-left:3px solid var(--teal); border-radius:8px;
+  padding:11px 14px; margin:10px 0 14px; overflow-x:auto; color:var(--ink);}
+.note{color:var(--muted); font-size:14px;}
+ul.lim{margin:6px 0 0; padding-left:18px; color:var(--muted);}
+ul.lim li{margin:5px 0;}
+details{margin-top:18px; border:1px solid var(--line); border-radius:10px; background:var(--surface);}
+summary{cursor:pointer; padding:12px 14px; font-weight:600; font-size:14px;}
+summary::-webkit-details-marker{color:var(--teal);}
+table{width:100%; border-collapse:collapse; font-size:13px; font-variant-numeric:tabular-nums;}
+th,td{text-align:right; padding:6px 10px; border-top:1px solid var(--line);}
+th:first-child,td:first-child{text-align:left;}
+thead th{color:var(--muted); font-weight:600; font-size:11px; letter-spacing:.04em; text-transform:uppercase;}
+.tbl-wrap{padding:0 6px 10px;}
+
+footer{margin-top:34px; padding-top:16px; border-top:1px solid var(--line);
+  color:var(--faint); font-size:12px; line-height:1.6;}
+footer b{color:var(--muted);}
+.byline{color:var(--muted); font-weight:600;}
+.neck-note{font-size:14px; font-weight:600; text-align:center; margin:3px 0 4px; color:var(--muted);}
+.neck-note.prot{color:#e5484d;}
+.neck-note.short{color:var(--warn);}
+footer a{color:var(--teal-ink); text-decoration:none;}
+footer a:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+  <header>
+    <div class="head-top">
+      <p class="eyebrow">Intrasaccular sizing &middot; Artisse</p>
+      <span class="version" title="build">v202606271613</span>
+    </div>
+    <h1>Background &amp; methods</h1>
+    <p class="lede">The braid model, the data provenance, and a width&ndash;height map of every Artisse size
+      behind the <a href="index.html">Compressed-height explorer</a>.</p>
+    <p class="blurb"><a href="index.html">&#8592; Back to the explorer</a></p>
+    <div class="caliper"><span class="bar"></span></div>
+  </header>
+
+  <figure class="allfig card">
+    <figcaption class="allfig-cap"><b>Every Artisse size as one width&ndash;height curve.</b> Each
+      <b>colour</b> is one device; the line is its compressed-height&ndash;vs&ndash;width relationship from the
+      braid model. The two dots on each line are the only real Medtronic values &mdash;
+      <span class="lg-air">&#9711; nominal, in air</span> and
+      <span class="lg-comp">&#9679; compressed at the rated-max aneurysm width</span>; everything else is
+      extrapolated, including the over-compression range below the rated width.</figcaption>
+    <svg id="allplot" role="img" aria-label="Width versus compressed-height curves for all Artisse devices"></svg>
+  </figure>
+
+  <section class="explain">
+    <h2>How the height is calculated</h2>
+
+    <p class="step">01 — The two known points</p>
+    <h3>The sizing sheet gives only two shapes per device</h3>
+    <p>For every device the Medtronic sheet publishes the nominal in-air shape — width <b>b</b> and
+      height <b>c</b> — and one compressed shape: when the device is deployed in a sac of width
+      <b>a</b> (the maximum average aneurysm width), its height becomes <b>d</b>. Heights anywhere
+      between those two widths, and below <b>a</b>, are not published.</p>
+
+    <p class="step">02 — The model</p>
+    <h3>Braid filament-length conservation</h3>
+    <p>An Artisse device is a braided nitinol mesh. The wires don't stretch, so squeezing the device
+      narrower forces it taller — the total filament length is conserved. Treating the braid as a
+      scissor/pantograph mesh gives a Pythagorean relation between height <span class="mono">H</span>
+      and width <span class="mono">W</span>:</p>
+    <div class="eq">H&sup2; + &alpha;&sup2;&middot;W&sup2; = L&sup2;&nbsp;&nbsp;&nbsp;(constant)</div>
+    <p class="note">&alpha; is a shape constant set by the braid angle and crossing density; L is
+      proportional to the conserved filament length. A smaller W forces a larger H.</p>
+
+    <p class="step">03 — Fitting the curve</p>
+    <h3>&alpha; and L are solved from the two points</h3>
+    <p>Two known points fix the two unknowns exactly. Setting the in-air state equal to the compressed
+      state:</p>
+    <div class="eq">c&sup2; + &alpha;&sup2;&middot;b&sup2; = d&sup2; + &alpha;&sup2;&middot;a&sup2; = L&sup2;</div>
+    <div class="eq">&alpha;&sup2; = (d&sup2; &minus; c&sup2;) / (b&sup2; &minus; a&sup2;)        L&sup2; = c&sup2; + &alpha;&sup2;&middot;b&sup2;</div>
+    <p>Because <span class="mono">d &gt; c</span> and <span class="mono">b &gt; a</span>, &alpha;&sup2;
+      is always positive, and by construction the fitted curve passes exactly through both published
+      points.</p>
+
+    <p class="step">04 — Reading any width</p>
+    <h3>Height at an arbitrary aneurysm width</h3>
+    <div class="eq">H(w) = &radic;(L&sup2; &minus; &alpha;&sup2;&middot;w&sup2;)</div>
+    <p>At <span class="mono">w = a</span> this returns the published <b>d</b>; at
+      <span class="mono">w = b</span> it returns the in-air <b>c</b>; between them it falls smoothly,
+      and below <b>a</b> it rises — that rise is the over-compression extrapolation.</p>
+
+    <p class="step">05 — % compressed Artisse width</p>
+    <h3>The compression column</h3>
+    <p>This column reports how much narrower than nominal the Artisse device is at the current width,
+      as a percentage of its in-air width (radial compression):</p>
+    <div class="eq">% compressed = (b &minus; w) / b &times; 100%</div>
+    <p class="note">It reads 0% at nominal width <b>b</b> and rises as the device is squeezed; at the
+      rated max sac <b>a</b> it equals (b&minus;a)/b.</p>
+
+    <p class="step">06 — The &plusmn; deltas</p>
+    <h3>Over/under-sizing next to width and height</h3>
+    <p>The small figure under each width is the width <b>oversizing</b> — how much wider the nominal
+      device is than the sac it sits in, <span class="mono">b &minus; w</span>, always positive and
+      echoing the sheet's +1 / +1.5 / +2 guide. The figure under each height appears once you enter a
+      sac height: it is the <b>coverage delta</b>, <span class="mono">H(w) &minus; sac height</span> —
+      positive (teal) means the device stands taller than the dome (the IFU's neck-coverage condition),
+      negative (amber) means it would come up short.</p>
+
+    <p class="step">07 — Matching an aneurysm</p>
+    <h3>How sizes are recommended</h3>
+    <p>Entering a sac width sets every device's deployed width to that value (the braid conforms to the
+      cavity), so each row shows the height that device would take in that sac. Each device is then judged on two
+      things together &mdash; how far it protrudes into the neck (compressed height minus sac height) and how much
+      its width is compressed. A size is a candidate fit when protrusion is in the working range and width
+      compression is positive: a <b>good</b> fit protrudes <b>0.5&ndash;1.0&nbsp;mm</b>; an <b>acceptable</b> fit
+      protrudes a shallower <b>0.2&ndash;0.5&nbsp;mm</b>, allowed only when width compression reaches
+      <b>&ge;20%</b> to compensate. A flush 0%-compression size is never recommended (no radial apposition).</p>
+    <p>Up to <b>three</b> suitable devices are marked with a single star
+      (<span style="color:var(--teal); font-weight:700">&#9733;</span>); the lead pick &mdash; named in
+      <i>Consider&hellip;</i> &mdash; carries a slightly stronger highlight. For a narrow sac the lead pick is the
+      candidate with the <b>greatest width compression</b>. For a sac <b>wider than 4&nbsp;mm</b> the lead pick
+      instead targets the size whose protrusion lands closest to <b>&ge;1&nbsp;mm</b>, since a wider sac seats more
+      securely with a little more neck protrusion. Protrusion beyond <b>1.0&nbsp;mm</b> is not a good or acceptable
+      fit, but when nothing reaches the working range the single closest size with positive compression and
+      protrusion is still offered &mdash; even if it sits just past the ceiling; a lead pick protruding more than
+      <b>1.5&nbsp;mm</b> is flagged <span style="color:var(--warn)">protrusion may be too high</span>. Devices
+      narrower than the sac (which cannot reach it) are dimmed as undersized.</p>
+
+    <p class="step">08 — The slider scale</p>
+    <h3>Why thumb travel &ne; millimetres</h3>
+    <p>Each slider is normalized so the rated max <b>a</b> sits at the same 25% position on every row —
+      that's what lines the knobs up at rest. The fixed left quarter is the 0.5&nbsp;mm
+      over-compression zone (w from a&minus;0.5 to a); the right three-quarters is that device's
+      working range (w from a to b).</p>
+
+    <p class="step">09 — Caveats</p>
+    <h3>What to keep in mind</h3>
+    <ul class="lim">
+      <li>Only the two endpoints are real Medtronic data. Everything in between, and the entire
+        sub-[a] zone, is an engineering estimate.</li>
+      <li>The radiopaque markers in the graphic are schematic placeholders at the device poles for
+        illustration — not the true marker count or positions of the Artisse device.</li>
+      <li>The published <b>d</b> values are rounded to 0.1&nbsp;mm, so the fitted &alpha; is not
+        identical across the matrix (&asymp;1.13 for the smallest devices up to &asymp;1.35 for
+        8.0&nbsp;mm) — expected for a real, non-ideal braid.</li>
+      <li>Real devices have a compression floor where the mesh densifies and stops elongating, so the
+        deepest part of the over-compression zone is the least trustworthy.</li>
+      <li>Anything left of the tick is below the rated envelope and therefore off-label.</li>
+    </ul>
+
+    <details>
+      <summary>Fitted parameters per device</summary>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>Device b&times;c</th><th>a</th><th>d</th><th>&alpha;</th><th>L</th><th>H at a&minus;0.5</th>
+          </tr></thead>
+          <tbody id="param-body"></tbody>
+        </table>
+      </div>
+    </details>
+    <p class="note disc"><b>About the values:</b> Only the two endpoints per device come from the Medtronic
+      Artisse sizing sheet (CA-CTL-0677-E) &mdash; the tick = rated max average aneurysm width [a] (height =
+      published compressed height [d]), and the slider's right end = nominal width [b] (height = in-air height
+      [c]). Everything in between, and the entire sub-[a] zone, are unvalidated estimates from a simplified
+      braid model; they are not Medtronic figures and have not been clinically verified. The device silhouette
+      and radiopaque markers are schematic. Always confirm sizing against the current Instructions for Use and
+      your own measurements. This tool is not affiliated with, sponsored, or endorsed by Medtronic; Artisse is
+      a trademark of Medtronic. Official reference chart:
+      <a href="https://www.medtronic.com/content/dam/medtronic-wide/public/western-europe/products/neurological/neurovascular/artisse-wallchart-en-gb.pdf" target="_blank" rel="noopener">Medtronic Artisse wallchart (EN-GB, PDF)</a>.</p>
+  </section>
+
+  <footer>
+    <span class="byline">Created by Prof. Dr. André Kemmling, Clinic for Neuroradiology, University Hospital
+    Marburg (UKGM), Germany &middot; for research and educational use &middot;
+    &copy; 2026 André Kemmling. All rights reserved. &middot;
+    <a href="mailto:kemmling@uni-marburg.de">kemmling@uni-marburg.de</a></span>
+  </footer>
+  </div>
+<script>
+const devices=[
+ {a:3.4,b:4.5,c:3.0,d:4.5},{a:3.4,b:4.5,c:4.0,d:5.2},
+ {a:3.8,b:5.0,c:3.0,d:4.9},{a:3.8,b:5.0,c:4.0,d:5.5},
+ {a:4.1,b:5.5,c:3.0,d:5.2},{a:4.1,b:5.5,c:4.0,d:5.9},{a:4.1,b:5.5,c:5.0,d:6.9},
+ {a:4.5,b:6.0,c:3.0,d:5.6},{a:4.5,b:6.0,c:4.0,d:6.2},{a:4.5,b:6.0,c:5.0,d:7.2},
+ {a:4.9,b:6.5,c:3.0,d:5.9},{a:4.9,b:6.5,c:4.0,d:6.6},{a:4.9,b:6.5,c:5.0,d:7.6},
+ {a:5.3,b:7.0,c:3.0,d:6.3},{a:5.3,b:7.0,c:4.0,d:7.0},{a:5.3,b:7.0,c:5.0,d:7.9},
+ {a:5.6,b:7.5,c:4.0,d:7.4},{a:5.6,b:7.5,c:5.0,d:8.3},
+ {a:6.0,b:8.0,c:4.0,d:7.8},{a:6.0,b:8.0,c:5.0,d:8.7}
+];
+const EXT=0.5, EPS=1e-9;
+const fit=d=>{const aSq=(d.d*d.d-d.c*d.c)/(d.b*d.b-d.a*d.a);return{aSq,L2:d.c*d.c+aSq*d.b*d.b};};
+const heightAt=(d,w)=>{const{aSq,L2}=fit(d);return Math.sqrt(Math.max(0,L2-aSq*w*w));};
+
+const pb=document.getElementById('param-body');
+devices.forEach(dev=>{
+  const {aSq,L2}=fit(dev);
+  const tr=document.createElement('tr');
+  tr.innerHTML='<td>'+dev.b.toFixed(1)+' \u00d7 '+dev.c.toFixed(1)+'</td><td>'+dev.a.toFixed(1)+
+    '</td><td>'+dev.d.toFixed(1)+'</td><td>'+Math.sqrt(aSq).toFixed(3)+'</td><td>'+
+    Math.sqrt(L2).toFixed(2)+'</td><td>'+heightAt(dev,dev.a-EXT).toFixed(2)+'</td>';
+  pb.appendChild(tr);
+});
+
+(function buildAllPlot(){
+  const host=document.getElementById('allplot'); if(!host) return;
+  const W=680,H=470, ML=50,MR=14,MT=16,MB=44, PW=W-ML-MR, PH=H-MT-MB, LO=1.0; // LO = mm extrapolated below rated-max width
+  let xmin=Infinity,xmax=-Infinity,ymin=Infinity,ymax=-Infinity;
+  const hsl2hex=(h,s,l)=>{ s/=100; l/=100; const a=s*Math.min(l,1-l), k=n=>(n+h/30)%12,
+    f=n=>{ const c=l-a*Math.max(-1,Math.min(k(n)-3,9-k(n),1)); return Math.round(255*c).toString(16).padStart(2,'0'); };
+    return '#'+f(0)+f(8)+f(4); };
+  const curves=devices.map((d,i)=>{
+    const pts=[];
+    for(let w=d.a-LO; w<=d.b+1e-9; w+=0.1){ const h=heightAt(d,w); pts.push([w,h]);
+      xmin=Math.min(xmin,w);xmax=Math.max(xmax,w);ymin=Math.min(ymin,h);ymax=Math.max(ymax,h); }
+    return {pts, air:[d.b,d.c], comp:[d.a,d.d], col:hsl2hex(Math.round(i/(devices.length-1)*320),68,47)};
+  });
+  xmin=Math.floor(xmin); xmax=Math.max(9,Math.ceil(xmax)); ymin=Math.min(2,Math.floor(ymin)); ymax=Math.ceil(ymax);
+  const sx=w=>ML+(w-xmin)/(xmax-xmin)*PW, sy=h=>MT+(1-(h-ymin)/(ymax-ymin))*PH;
+  let g='';
+  for(let i=0;i<=Math.round((xmax-xmin)*10);i++){ const X=sx(xmin+i/10).toFixed(1); g+=`<line x1="${X}" y1="${MT}" x2="${X}" y2="${MT+PH}" class="grid-min"/>`; }
+  for(let i=0;i<=Math.round((ymax-ymin)*10);i++){ const Y=sy(ymin+i/10).toFixed(1); g+=`<line x1="${ML}" y1="${Y}" x2="${ML+PW}" y2="${Y}" class="grid-min"/>`; }
+  for(let x=xmin;x<=xmax;x++){ const X=sx(x).toFixed(1);
+    g+=`<line x1="${X}" y1="${MT}" x2="${X}" y2="${MT+PH}" class="grid"/><text x="${X}" y="${MT+PH+15}" class="axt" text-anchor="middle">${x}</text>`; }
+  for(let y=ymin;y<=ymax;y++){ const Y=sy(y).toFixed(1);
+    g+=`<line x1="${ML}" y1="${Y}" x2="${ML+PW}" y2="${Y}" class="grid"/><text x="${ML-7}" y="${(+Y+4).toFixed(1)}" class="axt" text-anchor="end">${y}</text>`; }
+  g+=`<text x="${ML+PW/2}" y="${H-6}" class="axtitle" text-anchor="middle">Width (mm)</text>`;
+  g+=`<text x="13" y="${MT+PH/2}" class="axtitle" text-anchor="middle" transform="rotate(-90 13 ${MT+PH/2})">Compressed height (mm)</text>`;
+  const path=a=>a.map((p,i)=>(i?'L':'M')+sx(p[0]).toFixed(1)+' '+sy(p[1]).toFixed(1)).join(' ');
+  curves.forEach(c=>{ g+=`<path d="${path(c.pts)}" class="cv" stroke="${c.col}"/>`; });
+  curves.forEach(c=>{
+    g+=`<circle cx="${sx(c.air[0]).toFixed(1)}" cy="${sy(c.air[1]).toFixed(1)}" r="2.8" class="pt air" stroke="${c.col}"/>`;
+    g+=`<circle cx="${sx(c.comp[0]).toFixed(1)}" cy="${sy(c.comp[1]).toFixed(1)}" r="2.8" class="pt comp" fill="${c.col}"/>`; });
+  host.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  host.innerHTML=g;
+})();
+</script>
+<script data-goatcounter="https://akemmling.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
