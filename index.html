@@ -35,6 +35,7 @@ body{
   color:var(--faint); white-space:nowrap; font-weight:500;}
 h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-weight:600;}
 .lede{color:var(--muted); margin:0; max-width:62ch;}
+.rows-panel .lede{margin:8px 4px 12px;}
 .caliper{display:flex; align-items:center; margin:22px 0 28px; color:var(--faint);}
 .caliper::before,.caliper::after{content:""; width:7px; height:7px; border:1px solid currentColor; border-radius:50%;}
 .caliper .bar{flex:1; height:1px; background:currentColor; opacity:.5;}
@@ -54,6 +55,7 @@ h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-
   padding:14px 8px 14px; border-bottom:1px solid var(--line); margin-bottom:8px;}
 .matcher .ml{font-weight:600; font-size:19px;}
 .matcher label{display:inline-flex; align-items:center; gap:6px; font-size:16px; color:var(--muted);}
+.matcher .lt{display:inline-block;}
 .matcher input[type=number]{width:86px; padding:7px 10px; border:1px solid var(--line);
   border-radius:7px; background:var(--bg); color:var(--ink); font-size:16px;
   font-variant-numeric:tabular-nums; -moz-appearance:textfield;}
@@ -67,7 +69,7 @@ h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-
 .hint{padding:0 8px 12px; color:var(--ink); font-size:15px; line-height:1.5; text-align:left;}
 
 /* rows */
-.row{display:grid; grid-template-columns:104px minmax(0,1fr) 70px 78px 70px 92px; align-items:center;
+.row{display:grid; grid-template-columns:104px minmax(0,1fr) 70px 96px 70px 92px; align-items:center;
   gap:9px; padding:5px 10px; border-radius:9px; cursor:pointer; transition:opacity .12s;}
 .row:hover{background:color-mix(in srgb,var(--teal-soft) 50%, transparent);}
 .row.active{background:var(--teal-soft);}
@@ -81,6 +83,7 @@ h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-
   letter-spacing:.02em; text-transform:uppercase; color:var(--muted); font-weight:600; white-space:normal;
   min-width:0; overflow-wrap:break-word;}
 .colhead.r{text-align:right;}
+.colhead .mb{display:none;}
 .dev{font-weight:600; font-size:15px; color:var(--teal-ink); white-space:nowrap; font-variant-numeric:tabular-nums;}
 .sl{position:relative; display:flex; align-items:center;}
 #rows.matching .sl input{pointer-events:none;}
@@ -112,7 +115,7 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px var(--tea
 .fp-titles{display:flex; flex-direction:column;}
 .fp-title{font-weight:600; font-size:16px; font-variant-numeric:tabular-nums;}
 .fp-aneu{font-weight:600; font-size:16px; color:#e5484d; font-variant-numeric:tabular-nums; margin-top:1px;}
-.fp-titles .hlab{display:inline-block; min-width:82px;}
+.fp-titles .hlab{display:inline-block; min-width:96px; padding-right:6px;}
 .fp-sub{font-size:11.5px; color:var(--faint); margin-bottom:6px; line-height:1.4;}
 #glyph{display:block; width:100%; max-width:208px; margin:0 auto 4px;}
 #glyph .dim{stroke:var(--faint); stroke-width:1;}
@@ -126,6 +129,14 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px var(--tea
 .mc .l{font-size:10.5px; color:var(--muted);}
 .mc .v{font-size:18px; font-weight:600; margin-top:1px; font-variant-numeric:tabular-nums;}
 .mc .v .vsub{font-size:12px; font-weight:400; color:var(--muted); margin-left:7px; font-variant-numeric:tabular-nums;}
+.fpgrid{display:grid; grid-template-columns:auto 1fr 1fr; column-gap:18px; row-gap:4px; align-items:baseline; margin:2px 2px 9px;}
+.fpgrid.no-aneu .fpg-aneu{display:none;}
+.fpg-hd{font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); text-align:right; font-family:ui-monospace,"SF Mono",Menlo,monospace;}
+.fpg-r{font-size:14px; font-weight:600;}
+.fpg-sub{font-size:11px; font-weight:400; color:var(--muted);}
+.fpg-n{text-align:right; font-size:16px; font-weight:600; font-variant-numeric:tabular-nums;}
+.fpg-aneu{color:#e5484d;}
+.fp-comp{margin-bottom:9px;}
 .badge{display:none; align-items:center; gap:5px; font-size:11.5px; font-weight:600;
   color:var(--muted); background:rgba(120,130,145,.14); padding:3px 8px; border-radius:7px;}
 .badge svg{width:13px; height:13px;}
@@ -178,6 +189,40 @@ footer b{color:var(--muted);}
 .neck-note.short{color:var(--warn);}
 footer a{color:var(--teal-ink); text-decoration:none;}
 footer a:hover{text-decoration:underline;}
+@media (max-width:480px){
+  .wrap{padding:24px 14px 48px;}
+  .eyebrow{font-size:11.5px; letter-spacing:.07em;}
+  .head-top .eyebrow{margin:0 0 8px;}
+  .version{font-size:10.5px;}
+  h1{font-size:25px;}
+  .blurb{font-size:14px;}
+  .rows-panel{padding:6px 6px;}
+  .rows-panel .lede{margin:6px 2px 10px; font-size:14px;}
+  /* matcher */
+  .matcher{gap:8px 9px; padding:12px 4px 12px;}
+  .matcher .ml{font-size:17px; flex-basis:100%;}
+  .matcher label{font-size:14px;}
+  .matcher .lt{min-width:150px;}
+  .matcher input[type=number]{width:76px; font-size:15px; padding:6px 8px;}
+  #match-info{font-size:16px;}
+  /* compact table — keep both width columns under one spanning header */
+  .table{min-width:340px;}
+  .row{grid-template-columns:64px minmax(36px,1fr) 36px 58px 38px 44px; gap:5px; padding:5px 5px;}
+  .dev{font-size:12px;}
+  .row.rec .dev::before{font-size:10px; letter-spacing:-1px;}
+  .num{font-size:11px;}
+  .num.w .val,.num.h .val,.num.ah .val{font-size:12px;}
+  .num .dlt{font-size:9px; height:10px;}
+  .focus-panel{padding:11px;}
+  .metrics{grid-template-columns:1fr;}
+  /* header: abbreviated labels, no slider title, one spanning title over the two width columns */
+  .colhead{font-size:8.5px; letter-spacing:0; line-height:1.2;}
+  .colhead .dk{display:none;}
+  .colhead .mb{display:inline;}
+  .colhead.ch-hide{display:none;}
+  .colhead.ch-span{grid-column:span 2;}
+  .colhead.r.ch-span{text-align:center;}
+}
 </style>
 </head>
 <body>
@@ -185,12 +230,9 @@ footer a:hover{text-decoration:underline;}
   <header>
     <div class="head-top">
       <p class="eyebrow">Intrasaccular sizing · Artisse</p>
-      <span class="version" title="build">v202606271613</span>
+      <span class="version" title="build">v202606291043</span>
     </div>
     <h1>Compressed-height explorer</h1>
-    <p class="lede">Move the slider to see how height changes with compression for each Artisse. Enter a
-      measured aneurysm and let the tool flag up to three devices (<span style="color:var(--teal); font-weight:700">&#9733;</span>)
-      where compressed shape probably fits (or choose your desired protrusion at the neck).</p>
     <p class="blurb">This Artisse size explorer turns the
       <a href="https://www.medtronic.com/content/dam/medtronic-wide/public/western-europe/products/neurological/neurovascular/artisse-wallchart-en-gb.pdf" target="_blank" rel="noopener">static Medtronic sizing chart</a>
       into a dynamic one. A static table can only print a handful of fixed compression/height pairs; it cannot
@@ -202,39 +244,37 @@ footer a:hover{text-decoration:underline;}
 
   <div class="app">
     <section class="card rows-panel" aria-label="Device sliders">
+      <p class="lede">Move the slider to see how height changes with compression for each Artisse. Enter a
+        measured aneurysm and let the tool flag up to three devices (<span style="color:var(--teal); font-weight:700">&#9733;</span>)
+        where compressed shape probably fits (or choose your desired protrusion at the neck).</p>
       <div class="matcher">
         <span class="ml">Match aneurysm</span>
-        <label>width <input id="in-w" type="number" step="0.1" min="0" placeholder="mm" aria-label="Aneurysm width in millimetres"></label>
-        <label>height (dome&ndash;neck) <input id="in-h" type="number" step="0.1" min="0" placeholder="mm" aria-label="Aneurysm dome-to-neck height in millimetres"></label>
+        <label><span class="lt">width</span><input id="in-w" type="number" step="0.1" min="0" placeholder="mm" aria-label="Aneurysm width in millimetres"></label>
+        <label><span class="lt">height (dome&ndash;neck)</span><input id="in-h" type="number" step="0.1" min="0" placeholder="mm" aria-label="Aneurysm dome-to-neck height in millimetres"></label>
         <button id="clear" type="button">Clear</button>
         <span id="match-info"></span>
       </div>
       <div class="table-scroll"><div class="table">
       <div class="row head" aria-hidden="true">
-        <span class="colhead">Artisse device</span>
-        <span class="colhead">Compression</span>
-        <span class="colhead r">Compressed Artisse width</span>
-        <span class="colhead r">Artisse width compression</span>
+        <span class="colhead"><span class="dk">Artisse device</span><span class="mb">Artisse</span></span>
+        <span class="colhead"><span class="dk">Compression</span></span>
+        <span class="colhead r ch-span"><span class="dk">Compressed Artisse width</span><span class="mb">Artisse width compression</span></span>
+        <span class="colhead r ch-hide">Artisse width compression</span>
         <span class="colhead r">Aneurysm height</span>
-        <span class="colhead r">Compressed Artisse height</span>
+        <span class="colhead r"><span class="dk">Compressed Artisse height</span><span class="mb">Compressed height</span></span>
       </div>
       <div id="rows"></div>
       </div></div>
     </section>
 
     <aside class="card focus-panel" aria-label="Selected device detail">
-      <div class="fp-head">
-        <div class="fp-titles">
-          <div class="fp-title" id="m-dev"></div>
-          <div class="fp-aneu" id="m-aneu" style="display:none"></div>
-        </div>
-        <span class="badge" id="m-ext">extrapolated below rated max</span>
+      <div class="fpgrid" id="fpgrid">
+        <div></div><div class="fpg-hd">width</div><div class="fpg-hd">height</div>
+        <div class="fpg-r fpg-aneu">Aneurysm</div><div class="fpg-n fpg-aneu" id="g-nw"></div><div class="fpg-n fpg-aneu" id="g-nh"></div>
+        <div class="fpg-r">Artisse <span class="fpg-sub">in air</span></div><div class="fpg-n" id="g-aw"></div><div class="fpg-n" id="g-ah"></div>
+        <div class="fpg-r">Compressed</div><div class="fpg-n" id="g-cw"></div><div class="fpg-n" id="g-ch"></div>
       </div>
-      <div class="metrics">
-        <div class="mc"><div class="l">Compressed Artisse width</div><div class="v" id="m-w"></div></div>
-        <div class="mc"><div class="l">Compressed Artisse height</div><div class="v" id="m-h"></div></div>
-        <div class="mc wide"><div class="l">Artisse width compression</div><div class="v" id="m-comp"></div></div>
-      </div>
+      <div class="mc fp-comp"><div class="l">Artisse width compression</div><div class="v" id="m-comp"></div></div>
       <div class="fp-sub">solid = compressed device · dashed = device in air · <span style="color:#e5484d">red = aneurysm sac</span> · dots = markers (schematic)</div>
       <svg id="glyph" viewBox="0 0 150 176" role="img" aria-label="Device cross-section in an aneurysm, compressed shape versus dashed nominal shape">
         <defs>
@@ -334,7 +374,7 @@ devices.forEach((dev,i)=>{
     '<div class="sl"><input type="range" min="0" max="1000" step="1" value="'+Math.round(P0*1000)+'" '+
     'aria-label="Aneurysm width for '+dev.b+' by '+dev.c+' millimetre device; rated max '+dev.a+
     ', extrapolates to '+(dev.a-EXT).toFixed(1)+', up to nominal '+dev.b+'"><span class="tick"></span></div>'+
-    '<div class="num w"><span class="val"></span><span class="dlt"></span></div>'+
+    '<div class="num w"><span class="val"></span></div>'+
     '<div class="num rc"></div>'+
     '<div class="num ah"><span class="val"></span></div>'+
     '<div class="num h"><span class="val"></span><span class="dlt"></span></div>';
@@ -361,7 +401,6 @@ function updateRow(r){
   const dev=devices[+r.dataset.i], w=widthOf(r), h=heightAt(dev,w);
   const over=dev.b-w;
   r.querySelector('.num.w .val').textContent=fmt(w);
-  r.querySelector('.num.w .dlt').textContent='+'+fmt(over);
   r.querySelector('.num.ah .val').textContent = targetH!=null ? fmt(targetH) : '\u2014';
   r.querySelector('.num.h .val').textContent=fmt(h);
   const dEl=r.querySelector('.num.h .dlt');
@@ -369,23 +408,20 @@ function updateRow(r){
     dEl.textContent=(dh>=0?'+':'\u2212')+fmt(Math.abs(dh));
     dEl.className='dlt '+(dh>=0?'pos':'neg'); }
   else { dEl.textContent=''; dEl.className='dlt'; }
-  r.querySelector('.num.rc').textContent=Math.round(over/dev.b*100)+'%';
+  r.querySelector('.num.rc').textContent=fmt(over)+' \u00b7 '+Math.round(over/dev.b*100)+'%';
 }
 function highlight(){ [...rowsEl.children].forEach((r,i)=>r.classList.toggle('active',i===active)); }
 function set(id,t){document.getElementById(id).textContent=t;}
 function updateFocus(){
   const dev=devices[active], r=rowsEl.children[active];
-  const w=widthOf(r), h=heightAt(dev,w), ext=w<dev.a-EPS;
+  const w=widthOf(r), h=heightAt(dev,w);
   const matching=(targetW!=null && targetH!=null);
-  const devDim=dev.b.toFixed(1)+' \u00d7 '+dev.c.toFixed(1)+' mm';
-  document.getElementById('m-dev').innerHTML='<span class="hlab">Artisse</span><span class="hdim">'+devDim+(matching?' placed in':'')+'</span>';
-  const ma=document.getElementById('m-aneu');
-  if(matching){ ma.innerHTML='<span class="hlab">Aneurysm</span><span class="hdim">'+fmt(targetW)+' \u00d7 '+fmt(targetH)+' mm</span>'; ma.style.display=''; }
-  else { ma.style.display='none'; }
-  set('m-w',fmt(w)+' mm'); set('m-h',fmt(h)+' mm');
+  set('g-aw',fmt(dev.b)+' mm'); set('g-ah',fmt(dev.c)+' mm');
+  set('g-cw',fmt(w)+' mm');     set('g-ch',fmt(h)+' mm');
+  document.getElementById('fpgrid').classList.toggle('no-aneu', !matching);
+  if(matching){ set('g-nw',fmt(targetW)+' mm'); set('g-nh',fmt(targetH)+' mm'); }
   const oversz=(targetW!=null)?(dev.b-targetW):(dev.b-w);
   document.getElementById('m-comp').innerHTML=Math.round((dev.b-w)/dev.b*100)+'%<span class="vsub">(width oversized by '+fmt(Math.abs(oversz))+' mm)</span>';
-  document.getElementById('m-ext').style.display=ext?'inline-flex':'none';
   const rx=w*SC/2, ry=h*SC/2, rrx=dev.b*SC/2, rry=dev.c*SC/2;
   const g=document.getElementById('glyph');
   const E=(id,att)=>{const el=g.querySelector('#'+id);for(const k in att)el.setAttribute(k,att[k]);};
