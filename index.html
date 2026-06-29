@@ -72,10 +72,11 @@ h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-
 .row{display:grid; grid-template-columns:104px minmax(0,1fr) 70px 96px 70px 92px; align-items:center;
   gap:9px; padding:5px 10px; border-radius:9px; cursor:pointer; transition:opacity .12s;}
 .row:hover{background:color-mix(in srgb,var(--teal-soft) 50%, transparent);}
-.row.active{background:var(--teal-soft);}
 .row.rec{background:color-mix(in srgb,var(--teal) 12%, transparent); box-shadow:inset 2px 0 0 var(--teal);}
 .row.rec.primary{background:color-mix(in srgb,var(--teal) 18%, transparent); box-shadow:inset 3px 0 0 var(--teal);}
 .row.rec .dev::before{content:"\2605 "; color:var(--teal); font-weight:700; font-size:12px; letter-spacing:-.5px;}
+.table .row.active{box-shadow:inset 0 0 0 2px var(--teal);}
+.row.active .dev{font-weight:800;}
 .row.oor{opacity:.4;}
 .row.head{cursor:default; align-items:end; padding-bottom:6px;}
 .row.head:hover{background:none;}
@@ -83,7 +84,9 @@ h1{font-size:30px; line-height:1.1; letter-spacing:-.02em; margin:0 0 8px; font-
   letter-spacing:.02em; text-transform:uppercase; color:var(--muted); font-weight:600; white-space:normal;
   min-width:0; overflow-wrap:break-word;}
 .colhead.r{text-align:right;}
-.colhead .mb{display:none;}
+.colhead.ch-hide{display:none;}
+.colhead.ch-span{grid-column:span 2;}
+.colhead.r.ch-span{text-align:center;}
 .dev{font-weight:600; font-size:15px; color:var(--teal-ink); white-space:nowrap; font-variant-numeric:tabular-nums;}
 .sl{position:relative; display:flex; align-items:center;}
 #rows.matching .sl input{pointer-events:none;}
@@ -110,7 +113,7 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px var(-
 input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px var(--teal-soft);}
 
 /* focus panel */
-.focus-panel{padding:12px;}
+.focus-panel{padding:12px; border-top:2px solid var(--teal);}
 .fp-head{display:flex; align-items:flex-start; gap:8px; flex-wrap:wrap; margin-bottom:5px;}
 .fp-titles{display:flex; flex-direction:column;}
 .fp-title{font-weight:600; font-size:16px; font-variant-numeric:tabular-nums;}
@@ -130,6 +133,11 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px var(--tea
 .mc .v{font-size:18px; font-weight:600; margin-top:1px; font-variant-numeric:tabular-nums;}
 .mc .v .vsub{font-size:12px; font-weight:400; color:var(--muted); margin-left:7px; font-variant-numeric:tabular-nums;}
 .fpgrid{display:grid; grid-template-columns:auto 1fr 1fr; column-gap:18px; row-gap:4px; align-items:baseline; margin:2px 2px 9px;}
+.fp-sel{display:flex; align-items:center; gap:8px; font-size:15px; font-weight:700; color:var(--teal-ink);
+  margin:0 2px 9px; padding-bottom:8px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums;}
+.fp-sel::before{content:""; width:9px; height:9px; border-radius:50%; background:var(--teal); flex:none;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 28%, transparent);}
+.fp-sel .tag{font-size:11px; font-weight:600; color:var(--muted); text-transform:none; margin-left:auto;}
 .fpgrid.no-aneu .fpg-aneu{display:none;}
 .fpg-hd{font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); text-align:right; font-family:ui-monospace,"SF Mono",Menlo,monospace;}
 .fpg-r{font-size:14px; font-weight:600;}
@@ -215,13 +223,8 @@ footer a:hover{text-decoration:underline;}
   .num .dlt{font-size:9px; height:10px;}
   .focus-panel{padding:11px;}
   .metrics{grid-template-columns:1fr;}
-  /* header: abbreviated labels, no slider title, one spanning title over the two width columns */
+  /* header: smaller text on mobile (labels/spanning are shared with desktop) */
   .colhead{font-size:8.5px; letter-spacing:0; line-height:1.2;}
-  .colhead .dk{display:none;}
-  .colhead .mb{display:inline;}
-  .colhead.ch-hide{display:none;}
-  .colhead.ch-span{grid-column:span 2;}
-  .colhead.r.ch-span{text-align:center;}
 }
 </style>
 </head>
@@ -230,7 +233,7 @@ footer a:hover{text-decoration:underline;}
   <header>
     <div class="head-top">
       <p class="eyebrow">Intrasaccular sizing · Artisse</p>
-      <span class="version" title="build">v202606291043</span>
+      <span class="version" title="build">v202606291631</span>
     </div>
     <h1>Compressed-height explorer</h1>
     <p class="blurb">This Artisse size explorer turns the
@@ -256,18 +259,19 @@ footer a:hover{text-decoration:underline;}
       </div>
       <div class="table-scroll"><div class="table">
       <div class="row head" aria-hidden="true">
-        <span class="colhead"><span class="dk">Artisse device</span><span class="mb">Artisse</span></span>
-        <span class="colhead"><span class="dk">Compression</span></span>
-        <span class="colhead r ch-span"><span class="dk">Compressed Artisse width</span><span class="mb">Artisse width compression</span></span>
+        <span class="colhead">Artisse</span>
+        <span class="colhead"></span>
+        <span class="colhead r ch-span">Artisse width compression</span>
         <span class="colhead r ch-hide">Artisse width compression</span>
         <span class="colhead r">Aneurysm height</span>
-        <span class="colhead r"><span class="dk">Compressed Artisse height</span><span class="mb">Compressed height</span></span>
+        <span class="colhead r">Compressed height</span>
       </div>
       <div id="rows"></div>
       </div></div>
     </section>
 
     <aside class="card focus-panel" aria-label="Selected device detail">
+      <div class="fp-sel" id="m-sel"></div>
       <div class="fpgrid" id="fpgrid">
         <div></div><div class="fpg-hd">width</div><div class="fpg-hd">height</div>
         <div class="fpg-r fpg-aneu">Aneurysm</div><div class="fpg-n fpg-aneu" id="g-nw"></div><div class="fpg-n fpg-aneu" id="g-nh"></div>
@@ -416,6 +420,7 @@ function updateFocus(){
   const dev=devices[active], r=rowsEl.children[active];
   const w=widthOf(r), h=heightAt(dev,w);
   const matching=(targetW!=null && targetH!=null);
+  document.getElementById('m-sel').innerHTML='Artisse '+fmt(dev.b)+' \u00d7 '+fmt(dev.c)+' mm<span class="tag">selected row</span>';
   set('g-aw',fmt(dev.b)+' mm'); set('g-ah',fmt(dev.c)+' mm');
   set('g-cw',fmt(w)+' mm');     set('g-ch',fmt(h)+' mm');
   document.getElementById('fpgrid').classList.toggle('no-aneu', !matching);
