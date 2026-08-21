@@ -96,7 +96,7 @@ h1{font-size:clamp(25px,2.9vw,34px); line-height:1.16; letter-spacing:-.015em;
 .lede a{color:var(--teal-ink); text-decoration:underline; text-underline-offset:2px;
   text-decoration-thickness:1px;}
 .rows-panel .lede{margin:8px 4px 12px;}
-.caliper{display:flex; align-items:center; margin:22px 0 28px; color:var(--faint);}
+.caliper{display:flex; align-items:center; margin:18px 0 20px; color:var(--faint);}
 .caliper::before,.caliper::after{content:""; width:7px; height:7px; border:1px solid currentColor; border-radius:50%;}
 .caliper .bar{flex:1; height:1px; background:currentColor; opacity:.5;}
 
@@ -210,13 +210,15 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px var(--tea
   color:var(--muted); background:rgba(120,130,145,.14); padding:3px 8px; border-radius:7px;}
 .badge svg{width:13px; height:13px;}
 
+.about{margin-top:26px; padding-top:20px; border-top:1px solid var(--line);}
+
 /* explanation */
-.blurb{margin:24px 2px 0; max-width:68ch; font-size:16px; line-height:1.65; color:var(--ink-soft);}
+.blurb{margin:0 2px; max-width:68ch; font-size:16px; line-height:1.65; color:var(--ink-soft);}
 .blurb a{color:var(--teal-ink); text-decoration:none;}
 .blurb a:hover{text-decoration:underline;}
 
 /* video walkthrough link */
-.videolink{display:inline-flex; align-items:center; gap:9px; margin:14px 2px 0;
+.videolink{display:inline-flex; align-items:center; gap:9px; margin:13px 2px 0;
   padding:8px 14px 8px 11px; border:1px solid var(--line); border-radius:10px;
   background:var(--surface); color:var(--ink); text-decoration:none; font-size:14px;
   line-height:1.35; max-width:74ch; transition:border-color .12s, background .12s;}
@@ -335,22 +337,9 @@ footer a:hover{text-decoration:underline;}
   <header>
     <div class="head-top">
       <p class="eyebrow">Interactive sizing chart</p>
-      <span class="version" title="build">v202608210345</span>
+      <span class="version" title="build">v202608210354</span>
     </div>
     <h1>Dynamic size explorer for the Artisse&trade; Intrasaccular Device</h1>
-    <p class="blurb">This Artisse size explorer turns the
-      <a href="https://www.medtronic.com/content/dam/medtronic-wide/public/western-europe/products/neurological/neurovascular/artisse-wallchart-en-gb.pdf" target="_blank" rel="noopener">static Medtronic sizing chart</a>
-      into a dynamic one. A static table can only print a handful of fixed compression/height pairs; it cannot
-      list every Artisse compression/height combination &mdash; this dynamic table can (see
-      <a href="background.html">background info</a>).
-      <a href="mailto:kemmling@uni-marburg.de?subject=Artisse%20size%20explorer%20feedback">Critique and feedback welcome.</a></p>
-    <a class="videolink" href="https://youtu.be/-nHWv_m5mf4" target="_blank" rel="noopener">
-      <span class="play" aria-hidden="true"><svg width="9" height="10" viewBox="0 0 9 10"><path d="M1 0.7 L8 5 L1 9.3 Z" fill="#fff"/></svg></span>
-      <span class="vl-txt">
-        <span class="vl-lead">Video walkthrough &mdash; how to use this explorer</span>
-        <span class="vl-sub">&ldquo;Artisse sizing for brain aneurysm using the dynamic height explorer&rdquo; on YouTube</span>
-      </span>
-    </a>
     <div class="caliper"><span class="bar"></span></div>
   </header>
 
@@ -413,6 +402,22 @@ footer a:hover{text-decoration:underline;}
       <div class="neck-note" id="m-neck" style="display:none"></div>
     </aside>
   </div>
+
+  <section class="about">
+    <p class="blurb">This Artisse size explorer turns the
+      <a href="https://www.medtronic.com/content/dam/medtronic-wide/public/western-europe/products/neurological/neurovascular/artisse-wallchart-en-gb.pdf" target="_blank" rel="noopener">static Medtronic sizing chart</a>
+      into a dynamic one. A static table can only print a handful of fixed compression/height pairs; it cannot
+      list every Artisse compression/height combination &mdash; this dynamic table can (see
+      <a href="background.html">background info</a>).
+      <a href="mailto:kemmling@uni-marburg.de?subject=Artisse%20size%20explorer%20feedback">Critique and feedback welcome.</a></p>
+    <a class="videolink" href="https://youtu.be/-nHWv_m5mf4" target="_blank" rel="noopener">
+      <span class="play" aria-hidden="true"><svg width="9" height="10" viewBox="0 0 9 10"><path d="M1 0.7 L8 5 L1 9.3 Z" fill="#fff"/></svg></span>
+      <span class="vl-txt">
+        <span class="vl-lead">Video walkthrough &mdash; how to use this explorer</span>
+        <span class="vl-sub">&ldquo;Artisse sizing for brain aneurysm using the dynamic height explorer&rdquo; on YouTube</span>
+      </span>
+    </a>
+  </section>
 
 
   <section class="card citebox" aria-labelledby="cite-h">
