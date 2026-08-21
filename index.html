@@ -210,6 +210,12 @@ th:first-child,td:first-child{text-align:left;}
 thead th{color:var(--muted); font-weight:600; font-size:11px; letter-spacing:.04em; text-transform:uppercase;}
 .tbl-wrap{padding:0 6px 10px;}
 
+.disclaimer{margin-top:16px; padding-top:12px; border-top:1px solid var(--line);
+  font-size:11px; line-height:1.55; color:var(--faint); max-width:96ch;}
+.disclaimer p{margin:0 0 7px;}
+.disclaimer p:last-child{margin-bottom:0;}
+.disclaimer .dh{color:var(--muted); font-weight:600; letter-spacing:.04em; text-transform:uppercase;
+  font-size:10px; display:block; margin-bottom:6px;}
 footer{margin-top:34px; padding-top:16px; border-top:1px solid var(--line);
   color:var(--faint); font-size:12px; line-height:1.6;}
 footer b{color:var(--muted);}
@@ -258,7 +264,7 @@ footer a:hover{text-decoration:underline;}
   <header>
     <div class="head-top">
       <p class="eyebrow">Interactive sizing chart</p>
-      <span class="version" title="build">v202608210301</span>
+      <span class="version" title="build">v202608210310</span>
     </div>
     <h1>Dynamic size explorer for the Artisse&trade; Intrasaccular Device</h1>
     <p class="blurb">This Artisse size explorer turns the
@@ -349,6 +355,26 @@ footer a:hover{text-decoration:underline;}
     Marburg (UKGM), Germany &middot; for research and educational use &middot;
     &copy; 2026 André Kemmling. All rights reserved. &middot;
     <a href="mailto:kemmling@uni-marburg.de">kemmling@uni-marburg.de</a></span>
+
+    <div class="disclaimer">
+      <span class="dh">Disclaimer</span>
+      <p>This tool was produced by Prof. Dr. André Kemmling and is subject to copyright. It is intended
+        solely for educational purposes and is provided free of charge. It does not constitute a
+        recommendation for, or promotion of, any diagnostic method, treatment or medical device described
+        or mentioned, and it is not affiliated with, sponsored or endorsed by any manufacturer.</p>
+      <p>No patient data of any kind is transmitted, processed or stored: any measurements entered remain
+        in the browser on the user&rsquo;s own device.</p>
+      <p>It is expressly noted that the sizing relationships shown here do not necessarily represent a
+        universally valid medical standard, and that medical standards may change with time and place. Only
+        the two published endpoints per device are manufacturer figures; every value between and beyond them
+        is an unvalidated estimate from a simplified model and has not been clinically verified.</p>
+      <p>This tool is not endorsed or intended as a reference for the diagnosis or treatment of disease in
+        general, and does not replace individual professional consultation by qualified medical personnel.
+        The decision for a specific treatment method should always rest on the individual advice of the
+        treating specialist. Any action based on the content shown here is at the user&rsquo;s own risk.</p>
+      <p>No liability is assumed for the accuracy, completeness or timeliness of the presented content. By
+        using this tool, the user accepts this disclaimer.</p>
+    </div>
   </footer>
 </div>
 
