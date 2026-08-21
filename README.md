@@ -1,5 +1,7 @@
 # Dynamic size explorer for the Artisse™ Intrasaccular Device
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22037111.svg)](https://doi.org/10.5281/zenodo.22037111)
+
 **→ [Open the explorer](https://akemmling.github.io/artisse-size-explorer/)**  ·  [Background & methods](https://akemmling.github.io/artisse-size-explorer/background.html)  ·  [Video walkthrough](https://youtu.be/-nHWv_m5mf4)
 
 An interactive sizing chart for the Artisse™ intrasaccular device (Medtronic). The printed
@@ -39,6 +41,14 @@ Not affiliated with, sponsored by, or endorsed by Medtronic. Artisse is a tradem
 | `background.html` | Model, data provenance, per-device fitted parameters, caveats. |
 | `og-card.png` | Social/link preview image. |
 | `sitemap.xml` | For search-engine submission. |
+
+## Citation
+
+Kemmling A. *Dynamic size explorer for the Artisse™ Intrasaccular Device.* Zenodo.
+[doi:10.5281/zenodo.22037111](https://doi.org/10.5281/zenodo.22037111)
+
+The DOI above is the concept DOI: it always resolves to the newest version. Each release also
+gets its own version DOI if you need to point at an exact snapshot.
 
 ## Author
 
