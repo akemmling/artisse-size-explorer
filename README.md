@@ -42,13 +42,28 @@ Not affiliated with, sponsored by, or endorsed by Medtronic. Artisse is a tradem
 | `og-card.png` | Social/link preview image. |
 | `sitemap.xml` | For search-engine submission. |
 
-## Citation
+## How to cite this tool in your research
 
-Kemmling A. *Dynamic size explorer for the Artisse™ Intrasaccular Device.* Zenodo.
-[doi:10.5281/zenodo.22037111](https://doi.org/10.5281/zenodo.22037111)
+If this explorer informed work you publish, present or teach, please cite the archived version
+rather than the bare web address — the archive is permanent and the URL may not be.
 
-The DOI above is the concept DOI: it always resolves to the newest version. Each release also
-gets its own version DOI if you need to point at an exact snapshot.
+> Kemmling, A. (2026). *Dynamic size explorer for the Artisse™ Intrasaccular Device*
+> [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22037111
+
+```bibtex
+@software{kemmling_artisse_explorer,
+  author    = {Kemmling, Andr\'e},
+  title     = {{Dynamic size explorer for the Artisse Intrasaccular Device}},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.22037111},
+  url       = {https://doi.org/10.5281/zenodo.22037111}
+}
+```
+
+That DOI is the *concept* DOI: it always resolves to the current version. To cite one exact
+snapshot instead, use its version DOI — v1.1 is
+[10.5281/zenodo.22037133](https://doi.org/10.5281/zenodo.22037133).
 
 ## Author
 

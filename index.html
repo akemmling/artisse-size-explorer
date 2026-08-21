@@ -268,11 +268,29 @@ thead th{color:var(--muted); font-weight:600; font-size:11px; letter-spacing:.04
 .disclaimer p:last-child{margin-bottom:0;}
 .disclaimer .dh{color:var(--muted); font-weight:600; letter-spacing:.04em; text-transform:uppercase;
   font-size:10px; display:block; margin-bottom:6px;}
+
+/* how to cite */
+.citebox{margin-top:26px; padding:16px 18px 18px;}
+.citebox h2{font-family:var(--font-mono); font-size:12.5px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--teal); margin:0 0 10px; font-weight:600;}
+.citebox p{margin:0 0 12px; color:var(--ink-soft); font-size:15px; max-width:74ch;}
+.citebox .ref{background:var(--bg); border:1px solid var(--line); border-left:3px solid var(--teal);
+  border-radius:8px; padding:12px 14px; font-size:14.5px; line-height:1.6; color:var(--ink); overflow-wrap:anywhere;
+  max-width:74ch;}
+.citebox .ref a{color:var(--teal-ink);}
+.citerow{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:11px;}
+.citebtn{padding:7px 13px; border:1px solid var(--line); background:var(--surface); color:var(--muted);
+  border-radius:7px; font-size:13px; font-family:inherit; cursor:pointer;}
+.citebtn:hover{color:var(--ink); border-color:var(--teal);}
+.citebox .fine{font-size:13px; color:var(--muted); margin:0;}
+.citebox details{margin-top:12px;}
+.citebox summary{font-size:13.5px; padding:9px 12px;}
+.citebox pre{margin:0; padding:12px 14px; overflow-x:auto; font-family:var(--font-mono);
+  font-size:12.5px; line-height:1.55; color:var(--ink); border-top:1px solid var(--line);}
 footer{margin-top:34px; padding-top:16px; border-top:1px solid var(--line);
   color:var(--faint); font-size:12px; line-height:1.6;}
 footer b{color:var(--muted);}
 .byline{color:var(--muted); font-weight:600;}
-.cite{display:block; margin-top:9px; color:var(--muted);}
 .neck-note{font-size:14px; font-weight:600; text-align:center; margin:3px 0 4px; color:var(--muted);}
 .neck-note.prot{color:#e5484d;}
 .neck-note.short{color:var(--warn);}
@@ -317,7 +335,7 @@ footer a:hover{text-decoration:underline;}
   <header>
     <div class="head-top">
       <p class="eyebrow">Interactive sizing chart</p>
-      <span class="version" title="build">v202608210338</span>
+      <span class="version" title="build">v202608210345</span>
     </div>
     <h1>Dynamic size explorer for the Artisse&trade; Intrasaccular Device</h1>
     <p class="blurb">This Artisse size explorer turns the
@@ -396,6 +414,50 @@ footer a:hover{text-decoration:underline;}
     </aside>
   </div>
 
+
+  <section class="card citebox" aria-labelledby="cite-h">
+    <h2 id="cite-h">How to cite this tool in your research</h2>
+    <p>If this explorer informed work you publish, present or teach, please cite the archived
+      version rather than the bare web address &mdash; the archive is permanent and the URL may not be.</p>
+    <div class="ref" id="cite-ref">Kemmling, A. (2026). <i>Dynamic size explorer for the Artisse&trade;
+      Intrasaccular Device</i> [Computer software]. Zenodo.
+      <a href="https://doi.org/10.5281/zenodo.22037111">https://doi.org/10.5281/zenodo.22037111</a></div>
+    <div class="citerow">
+      <button class="citebtn" type="button" id="cite-copy">Copy citation</button>
+      <p class="fine">That DOI always resolves to the current version. To cite one exact snapshot,
+        use the version DOI &mdash; v1.1 is
+        <a href="https://doi.org/10.5281/zenodo.22037133">10.5281/zenodo.22037133</a>.</p>
+    </div>
+    <details>
+      <summary>BibTeX</summary>
+      <pre id="cite-bib">@software{kemmling_artisse_explorer,
+  author    = {Kemmling, Andr\'e},
+  title     = {{Dynamic size explorer for the Artisse Intrasaccular Device}},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.22037111},
+  url       = {https://doi.org/10.5281/zenodo.22037111}
+}</pre>
+    </details>
+  </section>
+
+<script>
+(function(){
+  function wire(btn,src,label){
+    var b=document.getElementById(btn), s=document.getElementById(src);
+    if(!b||!s) return;
+    b.addEventListener('click',function(){
+      var t=s.innerText.replace(/\s+/g,' ').trim();
+      var done=function(){ var o=b.textContent; b.textContent='Copied'; setTimeout(function(){b.textContent=o;},1400); };
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done,function(){}); }
+      else { var a=document.createElement('textarea'); a.value=t; document.body.appendChild(a); a.select();
+             try{document.execCommand('copy'); done();}catch(e){} document.body.removeChild(a); }
+    });
+  }
+  wire('cite-copy','cite-ref');
+})();
+</script>
+
   <footer>
     <b>Run it as an app:</b> in Safari choose File &#9656; Add to Dock; or in Chrome use the &#8942; menu
     &#9656; Cast, Save and Share &#9656; Create Shortcut and tick &ldquo;Open as window.&rdquo; The file is
@@ -408,7 +470,6 @@ footer a:hover{text-decoration:underline;}
     Marburg (UKGM), Germany &middot; for research and educational use &middot;
     &copy; 2026 André Kemmling. All rights reserved. &middot;
     <a href="mailto:kemmling@uni-marburg.de">kemmling@uni-marburg.de</a></span>
-    <span class="cite"><b>Cite this tool:</b> Kemmling A. Dynamic size explorer for the Artisse&trade; Intrasaccular Device. Zenodo. <a href="https://doi.org/10.5281/zenodo.22037111">doi:10.5281/zenodo.22037111</a></span>
 
     <div class="disclaimer">
       <span class="dh">Disclaimer</span>
