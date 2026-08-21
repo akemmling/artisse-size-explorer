@@ -169,6 +169,19 @@ th,td{text-align:right; padding:6px 10px; border-top:1px solid var(--line);}
 th:first-child,td:first-child{text-align:left;}
 thead th{color:var(--muted); font-weight:600; font-size:11px; letter-spacing:.04em; text-transform:uppercase;}
 .tbl-wrap{padding:0 6px 10px;}
+.symdef{margin:0 0 14px; font-size:14px;}
+.symdef td{text-align:left; vertical-align:top;}
+.symdef td:first-child{width:2.2em; font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  font-weight:700; color:var(--teal-ink); font-size:15px;}
+.symdef td:nth-child(2){width:15em;}
+.symdef .src{color:var(--muted);}
+@media (max-width:560px){
+  .symdef,.symdef tbody,.symdef tr,.symdef td{display:block; width:auto;}
+  .symdef tr{border-top:1px solid var(--line); padding:8px 0;}
+  .symdef td{border-top:none; padding:0 2px;}
+  .symdef td:first-child{width:auto;}
+  .symdef td:nth-child(2){width:auto;}
+}
 
 footer{margin-top:34px; padding-top:16px; border-top:1px solid var(--line);
   color:var(--faint); font-size:12px; line-height:1.6;}
@@ -186,7 +199,7 @@ footer a:hover{text-decoration:underline;}
   <header>
     <div class="head-top">
       <p class="eyebrow">Intrasaccular sizing &middot; Artisse</p>
-      <span class="version" title="build">v202606271649</span>
+      <span class="version" title="build">v202608210246</span>
     </div>
     <h1>Background &amp; methods</h1>
     <p class="lede">The braid model, the data provenance, and a width&ndash;height map of every Artisse size
@@ -218,10 +231,29 @@ footer a:hover{text-decoration:underline;}
 
     <p class="step">01 — The two known points</p>
     <h3>The sizing sheet gives only two shapes per device</h3>
-    <p>For every device the Medtronic sheet publishes the nominal in-air shape — width <b>b</b> and
-      height <b>c</b> — and one compressed shape: when the device is deployed in a sac of width
-      <b>a</b> (the maximum average aneurysm width), its height becomes <b>d</b>. Heights anywhere
-      between those two widths, and below <b>a</b>, are not published.</p>
+    <p>Everything below is built from four numbers per device — <b>a</b>, <b>b</b>, <b>c</b> and
+      <b>d</b>. None of them is fitted or invented: all four are read straight off the Medtronic Artisse
+      sizing sheet (CA-CTL-0677-E). Two are widths, two are heights.</p>
+    <table class="symdef">
+      <tbody>
+        <tr><td>b</td><td>device <b>width</b> in air</td>
+            <td class="src">the first number in the device name — &ldquo;6.0&nbsp;&times;&nbsp;4.0&rdquo; gives b&nbsp;=&nbsp;6.0&nbsp;mm</td></tr>
+        <tr><td>c</td><td>device <b>height</b> in air</td>
+            <td class="src">the second number in the device name — c&nbsp;=&nbsp;4.0&nbsp;mm</td></tr>
+        <tr><td>a</td><td>rated <b>maximum average aneurysm width</b></td>
+            <td class="src">the widest sac that device is rated for; drawn as the tick on each slider</td></tr>
+        <tr><td>d</td><td>published <b>compressed height</b> at width a</td>
+            <td class="src">how tall the device stands once squeezed into a sac of width a</td></tr>
+      </tbody>
+    </table>
+    <p>Each row of the sheet therefore gives two shapes of the same device: <b>(b,&nbsp;c)</b> in air, and
+      <b>(a,&nbsp;d)</b> squeezed into its widest rated sac — narrower, and correspondingly taller. Two
+      points, two unknowns, which is what makes the fit in step 03 exact. Heights anywhere between those two
+      widths, and below <b>a</b>, are not published.</p>
+    <p class="note">Worth knowing: <b>a</b> always sits about 25% below <b>b</b> (24.0&ndash;25.5% across all
+      20 rows) and depends only on the nominal width — every 6.0&nbsp;mm device has a&nbsp;=&nbsp;4.5&nbsp;mm
+      whatever its height. The sheet&rsquo;s maximum aneurysm width is in effect a 25% width-oversizing rule,
+      so <b>d</b> is the only independently measured second point.</p>
 
     <p class="step">02 — The model</p>
     <h3>Braid filament-length conservation</h3>
@@ -249,6 +281,13 @@ footer a:hover{text-decoration:underline;}
     <p>At <span class="mono">w = a</span> this returns the published <b>d</b>; at
       <span class="mono">w = b</span> it returns the in-air <b>c</b>; between them it falls smoothly,
       and below <b>a</b> it rises — that rise is the over-compression extrapolation.</p>
+    <p class="note"><b>Worked example, Artisse 6.0&nbsp;&times;&nbsp;4.0</b> (b&nbsp;=&nbsp;6.0,
+      c&nbsp;=&nbsp;4.0, a&nbsp;=&nbsp;4.5, d&nbsp;=&nbsp;6.2):
+      &alpha;&sup2;&nbsp;=&nbsp;(6.2&sup2;&nbsp;&minus;&nbsp;4.0&sup2;)&nbsp;/&nbsp;(6.0&sup2;&nbsp;&minus;&nbsp;4.5&sup2;)&nbsp;=&nbsp;22.44&nbsp;/&nbsp;15.75&nbsp;=&nbsp;1.425
+      and L&sup2;&nbsp;=&nbsp;4.0&sup2;&nbsp;+&nbsp;1.425&nbsp;&middot;&nbsp;6.0&sup2;&nbsp;=&nbsp;67.29. Then
+      H(4.5)&nbsp;=&nbsp;&radic;(67.29&nbsp;&minus;&nbsp;1.425&nbsp;&middot;&nbsp;4.5&sup2;)&nbsp;=&nbsp;6.2&nbsp;mm,
+      the published compressed height, and H(6.0)&nbsp;=&nbsp;4.0&nbsp;mm, the in-air height. A 5.0&nbsp;mm sac
+      falls in between: H&nbsp;=&nbsp;&radic;(67.29&nbsp;&minus;&nbsp;35.62)&nbsp;=&nbsp;5.6&nbsp;mm.</p>
 
     <p class="step">05 — % compressed Artisse width</p>
     <h3>The compression column</h3>
