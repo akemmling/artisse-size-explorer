@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this tool, please cite it as below."
+title: "Dynamic size explorer for the Artisse™ Intrasaccular Device"
+abstract: >-
+  An interactive sizing chart for the Artisse™ intrasaccular device: the compressed
+  device height at any aneurysm width, for all twenty sizes, rather than the few
+  fixed compression/height pairs the printed sizing sheet lists.
+type: software
+authors:
+  - family-names: Kemmling
+    given-names: André
+    orcid: "https://orcid.org/0000-0001-8930-1894"
+    affiliation: "Clinic for Neuroradiology, University Hospital Marburg (UKGM), Philipps University of Marburg, Germany"
+    email: kemmling@uni-marburg.de
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.22037111
+    description: Concept DOI, always resolving to the latest version
+repository-code: "https://github.com/akemmling/artisse-size-explorer"
+url: "https://akemmling.github.io/artisse-size-explorer/"
+version: "1.0"
+date-released: "2026-08-21"
+keywords:
+  - Artisse
+  - intrasaccular device
+  - intracranial aneurysm
+  - device sizing
+  - neurointervention
+  - neuroradiology

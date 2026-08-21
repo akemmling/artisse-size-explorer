@@ -1,0 +1,36 @@
+{
+  "upload_type": "software",
+  "title": "Dynamic size explorer for the Artisse™ Intrasaccular Device",
+  "description": "<p>An interactive sizing chart for the Artisse™ intrasaccular device (Medtronic). The printed sizing sheet lists only a handful of fixed compression/height pairs per device; this tool turns that into a continuous relationship, so the compressed device height can be read at any aneurysm width, for all twenty Artisse sizes. Entering a measured aneurysm width and dome-to-neck height flags up to three devices whose compressed shape is likely to fit, with the resulting width compression and protrusion into the neck.</p><p>The model treats the braided nitinol mesh as a scissor mesh conserving filament length, giving H² + α²·W² = L². The two shapes published per device — nominal width and height in air, and the compressed height at the rated maximum average aneurysm width — fix the two unknowns exactly.</p><p><strong>Important:</strong> only those two endpoints per device are manufacturer figures. Every value between and beyond them is an unvalidated estimate from a simplified model and has not been clinically verified. For education and research; not a substitute for the current Instructions for Use, your own measurements, or professional consultation. Not affiliated with, sponsored by, or endorsed by Medtronic. Artisse is a trademark of Medtronic.</p>",
+  "creators": [
+    {
+      "name": "Kemmling, André",
+      "affiliation": "Clinic for Neuroradiology, University Hospital Marburg (UKGM), Philipps University of Marburg, Germany",
+      "orcid": "0000-0001-8930-1894"
+    }
+  ],
+  "keywords": [
+    "Artisse",
+    "intrasaccular device",
+    "intrasaccular flow disruption",
+    "intracranial aneurysm",
+    "aneurysm embolization",
+    "device sizing",
+    "neurointervention",
+    "neuroradiology",
+    "interactive tool"
+  ],
+  "language": "eng",
+  "related_identifiers": [
+    {
+      "identifier": "https://akemmling.github.io/artisse-size-explorer/",
+      "relation": "isIdenticalTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://youtu.be/-nHWv_m5mf4",
+      "relation": "isDocumentedBy",
+      "scheme": "url"
+    }
+  ]
+}
