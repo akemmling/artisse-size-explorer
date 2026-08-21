@@ -16,9 +16,10 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.22037111
     description: Concept DOI, always resolving to the latest version
+license-url: "https://github.com/akemmling/artisse-size-explorer/blob/main/LICENCE"
 repository-code: "https://github.com/akemmling/artisse-size-explorer"
 url: "https://akemmling.github.io/artisse-size-explorer/"
-version: "1.0"
+version: "1.1"
 date-released: "2026-08-21"
 keywords:
   - Artisse

@@ -57,4 +57,6 @@ Prof. Dr. André Kemmling, Clinic for Neuroradiology, University Hospital Marbur
 
 ## Licence
 
-See [`LICENCE`](LICENCE). © 2026 André Kemmling.
+© 2026 André Kemmling. **All rights reserved** — see [`LICENCE`](LICENCE).
+The tool may be used freely; its source, design and text may not be reproduced,
+modified or redistributed without the author’s written permission.

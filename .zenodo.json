@@ -32,5 +32,6 @@
       "relation": "isDocumentedBy",
       "scheme": "url"
     }
-  ]
+  ],
+  "license": "other-closed"
 }
