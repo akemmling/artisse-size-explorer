@@ -28,8 +28,17 @@ def get(path, **params):
         "Content-Type": "application/json",
         "User-Agent": "artisse-size-explorer community-stats",
     })
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return json.load(r)
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            return json.load(r)
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", "replace")[:500]
+        sys.exit(f"GoatCounter API {e.code} for {path}: {body}")
+
+# Sanity check: who is this token? (prints permissions and site access, never the token itself)
+me = get("me")
+tok = me.get("token") or {}
+print("token:", json.dumps({k: v for k, v in tok.items() if k not in ("token",)}, default=str)[:400])
 
 # Daily visitor totals (growth curve)
 tot = get("stats/total", start=START, end=end)
