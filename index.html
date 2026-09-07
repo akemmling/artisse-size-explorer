@@ -342,6 +342,23 @@ footer a:hover{text-decoration:underline;}
   .colhead .lb-full{display:none;}
   .colhead .lb-abbr{display:inline;}
 }
+
+/* community: where visitors come from (stats/community.json, refreshed daily by GitHub Actions) */
+.community[hidden]{display:none;}
+.community-grid{display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:22px 30px; margin-top:14px;}
+@media (max-width:640px){.community-grid{grid-template-columns:1fr;}}
+.community .cap{font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 8px;}
+.cc-list{list-style:none; margin:0; padding:0;}
+.cc-row{display:grid; grid-template-columns:1.7em minmax(0,1fr) auto; column-gap:8px; align-items:center; font-size:14px; color:var(--ink-soft); padding:3px 0;}
+.cc-row .flag{font-size:17px; line-height:1;}
+.cc-row .n{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.cc-row .v{font-family:var(--font-mono); font-size:12.5px; color:var(--muted);}
+.cc-row .bar{grid-column:2 / span 2; height:5px; background:var(--teal-soft); border-radius:3px; overflow:hidden;}
+.cc-row .bar i{display:block; height:100%; background:var(--teal); border-radius:3px;}
+.cc-more{font-size:13px; color:var(--muted); margin:8px 0 0 2.2em;}
+.community svg{width:100%; height:auto; display:block;}
+.community .ax{font-family:var(--font-mono); font-size:10px; fill:var(--muted);}
+.community .tl{font-size:13px; color:var(--muted); margin:6px 0 0;}
 </style>
 </head>
 <body>
@@ -459,6 +476,65 @@ footer a:hover{text-decoration:underline;}
 }</pre>
     </details>
   </section>
+
+  <section class="card citebox community" aria-labelledby="community-h" id="community" hidden>
+    <h2 id="community-h">Who is using this explorer</h2>
+    <p id="community-lead"></p>
+    <div class="community-grid">
+      <div>
+        <p class="cap">Visitors by country</p>
+        <ol class="cc-list" id="community-list"></ol>
+        <p class="cc-more" id="community-more" hidden></p>
+      </div>
+      <div id="community-trend" hidden>
+        <p class="cap">Visitors per week</p>
+        <svg id="community-svg" viewBox="0 0 320 96" role="img" aria-labelledby="community-svg-t"><title id="community-svg-t">Visitors per week</title></svg>
+        <p class="tl" id="community-tl"></p>
+      </div>
+    </div>
+    <p class="fine" style="margin-top:14px">Anonymous, cookieless counts via GoatCounter (unique visitors per day, no personal data).
+      Refreshed daily; last update <span id="community-upd">&ndash;</span>.</p>
+  </section>
+
+<script>
+(function(){
+  var sec=document.getElementById('community'); if(!sec||!window.fetch) return;
+  function flag(cc){ if(!cc||cc.length!==2) return '\u{1F310}'; return String.fromCodePoint.apply(null, cc.toUpperCase().split('').map(function(c){return 127397+c.charCodeAt(0);})); }
+  function fmt(n){ return n.toLocaleString('en-GB'); }
+  function mon(d){ return d.toLocaleDateString('en-GB',{month:'short',year:'numeric'}); }
+  function weekStart(day){ var d=new Date(day+'T00:00:00Z'); var w=(d.getUTCDay()+6)%7; d.setUTCDate(d.getUTCDate()-w); return d; }
+  fetch('stats/community.json',{cache:'no-cache'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(d){
+    var cs=(d.countries||[]).filter(function(c){return c.visitors>0;});
+    if(!cs.length) return;
+    var known=cs.filter(function(c){return c.code;});
+    var since=new Date(d.since+'T00:00:00Z');
+    document.getElementById('community-lead').innerHTML='<b>'+fmt(d.total_visitors)+' visitors</b> from <b>'+known.length+' countries</b> since '+mon(since)+'.';
+    var top=known.slice(0,10), max=top[0].visitors, list=document.getElementById('community-list');
+    top.forEach(function(c){
+      var li=document.createElement('li'); li.className='cc-row';
+      li.innerHTML='<span class="flag" aria-hidden="true">'+flag(c.code)+'</span><span class="n"></span><span class="v"></span><span class="bar"><i style="width:'+Math.max(2,Math.round(100*c.visitors/max))+'%"></i></span>';
+      li.querySelector('.n').textContent=c.name; li.querySelector('.v').textContent=fmt(c.visitors)+' ('+Math.round(100*c.visitors/d.total_visitors)+'%)';
+      list.appendChild(li);
+    });
+    if(known.length>top.length){ var m=document.getElementById('community-more'); m.textContent='and '+(known.length-top.length)+' more countries'; m.hidden=false; }
+    var daily=d.daily||[];
+    if(daily.length>6){
+      var weeks={}, order=[];
+      daily.forEach(function(x){ var k=weekStart(x.day).toISOString().slice(0,10); if(!(k in weeks)){weeks[k]=0; order.push(k);} weeks[k]+=x.visitors; });
+      var vals=order.map(function(k){return weeks[k];}), W=320, H=96, padL=4, padB=14, top_=8, n=vals.length, vmax=Math.max.apply(null,vals)||1;
+      var bw=(W-padL*2)/n, svg=document.getElementById('community-svg'), out='';
+      vals.forEach(function(v,i){ var h=(H-padB-top_)*v/vmax, x=padL+i*bw, y=H-padB-h; out+='<rect x="'+(x+bw*0.12).toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+(bw*0.76).toFixed(1)+'" height="'+h.toFixed(1)+'" rx="1.5" fill="'+(i===n-1?'var(--teal-soft)':'var(--teal)')+'"><title>week of '+order[i]+': '+v+' visitors</title></rect>'; });
+      out+='<text class="ax" x="'+padL+'" y="'+(H-2)+'">'+order[0]+'</text><text class="ax" x="'+(W-padL)+'" y="'+(H-2)+'" text-anchor="end">'+order[n-1]+'</text>';
+      svg.innerHTML+=out;
+      var last=vals[n-1], prev=vals[n-2]||0;
+      document.getElementById('community-tl').textContent='Latest full week: '+fmt(prev)+' visitors (current week so far: '+fmt(last)+'). Peak week: '+fmt(vmax)+'.';
+      document.getElementById('community-trend').hidden=false;
+    }
+    var g=new Date(d.generated); document.getElementById('community-upd').textContent=isNaN(g)?'\u2013':g.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    sec.hidden=false;
+  }).catch(function(){});
+})();
+</script>
 
 <script>
 (function(){
