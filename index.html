@@ -107,7 +107,7 @@ h1{font-size:clamp(25px,2.9vw,34px); line-height:1.16; letter-spacing:-.015em;
 .lede{color:var(--ink-soft); margin:0; max-width:66ch; line-height:1.6;}
 .lede a{color:var(--teal-ink); text-decoration:underline; text-underline-offset:2px;
   text-decoration-thickness:1px;}
-.rows-panel .lede{margin:8px 4px 12px;}
+.rows-panel .lede{margin:8px 10px 12px;}
 .caliper{display:flex; align-items:center; margin:18px 0 20px; color:var(--faint);}
 .caliper::before,.caliper::after{content:""; width:7px; height:7px; border:1px solid currentColor; border-radius:50%;}
 .caliper .bar{flex:1; height:1px; background:currentColor; opacity:.5;}
@@ -124,7 +124,7 @@ h1{font-size:clamp(25px,2.9vw,34px); line-height:1.16; letter-spacing:-.015em;
 
 /* matcher */
 .matcher{display:flex; align-items:center; gap:11px; flex-wrap:wrap;
-  padding:14px 8px 14px; border-bottom:1px solid var(--line); margin-bottom:8px;}
+  padding:14px 10px 14px; border-bottom:1px solid var(--line); margin-bottom:8px;}
 .matcher .ml{font-weight:600; font-size:19px;}
 .matcher label{display:inline-flex; align-items:center; gap:6px; font-size:16px; color:var(--muted);}
 .matcher .lt{display:inline-block;}
@@ -226,12 +226,12 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px var(--tea
 .about{margin-top:26px; padding-top:20px; border-top:1px solid var(--line);}
 
 /* explanation */
-.blurb{margin:0 2px; max-width:68ch; font-size:16px; line-height:1.65; color:var(--ink-soft);}
+.blurb{margin:0; max-width:68ch; font-size:16px; line-height:1.65; color:var(--ink-soft);}
 .blurb a{color:var(--teal-ink); text-decoration:none;}
 .blurb a:hover{text-decoration:underline;}
 
 /* video walkthrough link */
-.linkrow{display:flex; flex-wrap:wrap; gap:10px; margin:13px 2px 0;}
+.linkrow{display:flex; flex-wrap:wrap; gap:10px; margin:14px 0 0;}
 .videolink{display:inline-flex; align-items:center; gap:9px; margin:0;
   padding:8px 14px 8px 11px; border:1px solid var(--line); border-radius:10px;
   background:var(--surface); color:var(--ink); text-decoration:none; font-size:14px;
@@ -286,14 +286,14 @@ thead th{color:var(--muted); font-weight:600; font-size:11px; letter-spacing:.04
   font-size:10px; display:block; margin-bottom:6px;}
 
 /* how to cite */
-.citebox{margin-top:26px; padding:16px 18px 18px;}
+.citebox{margin-top:26px; padding:16px 20px 18px;}
 .citebox h2{font-family:var(--font-mono); font-size:12.5px; letter-spacing:.14em; text-transform:uppercase;
   color:var(--teal); margin:0 0 10px; font-weight:600;}
 .citebox p{margin:0 0 12px; color:var(--ink-soft); font-size:15px; max-width:74ch;}
 .citebox .ref{background:var(--bg); border:1px solid var(--line); border-left:3px solid var(--teal);
   border-radius:8px; padding:12px 14px; font-size:14.5px; line-height:1.6; color:var(--ink); overflow-wrap:anywhere;
   max-width:74ch;}
-.citebox .ref a{color:var(--teal-ink);}
+.citebox a{color:var(--teal-ink);}
 .citerow{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:11px;}
 .citebtn{padding:7px 13px; border:1px solid var(--line); background:var(--surface); color:var(--muted);
   border-radius:7px; font-size:13px; font-family:inherit; cursor:pointer;}
@@ -321,16 +321,17 @@ footer a:hover{text-decoration:underline;}
   .videolink{font-size:13px; padding:8px 12px 8px 10px;}
   .videolink .vl-sub{font-size:11.5px;}
   .rows-panel{padding:6px 6px;}
-  .rows-panel .lede{margin:6px 2px 10px; font-size:15px;}
+  .rows-panel .lede{margin:6px 5px 10px; font-size:15px;}
   /* matcher */
-  .matcher{gap:8px 9px; padding:12px 4px 12px;}
+  .matcher{gap:8px 9px; padding:12px 5px 12px;}
   .matcher .ml{font-size:17px; flex-basis:100%;}
   .matcher label{font-size:14px;}
   .matcher .lt{min-width:150px;}
   .matcher input[type=number]{width:76px; font-size:15px; padding:6px 8px;}
   #match-info{font-size:16px;}
   /* compact table — keep both width columns under one spanning header */
-  .table{min-width:340px;}
+  .table{min-width:0;}
+  .citebox{padding:14px 11px 16px;}
   .row{grid-template-columns:64px minmax(36px,1fr) 36px 58px 38px 44px; gap:5px; padding:5px 5px;}
   .dev{font-size:12px;}
   .row.rec .dev::before{font-size:10px; letter-spacing:-1px;}
