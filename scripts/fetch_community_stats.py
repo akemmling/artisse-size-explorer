@@ -7,7 +7,7 @@ permission, created at https://akemmling.goatcounter.com/user/api.
 
 Counts are unique visitors as GoatCounter defines them (cookieless, per day).
 """
-import json, os, sys, urllib.parse, urllib.request
+import json, os, sys, time, urllib.error, urllib.parse, urllib.request
 from datetime import datetime, timezone, timedelta
 
 SITE = os.environ.get("GOATCOUNTER_SITE", "https://akemmling.goatcounter.com")
@@ -28,12 +28,24 @@ def get(path, **params):
         "Content-Type": "application/json",
         "User-Agent": "artisse-size-explorer community-stats",
     })
-    try:
-        with urllib.request.urlopen(req, timeout=60) as r:
-            return json.load(r)
-    except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8", "replace")[:500]
-        sys.exit(f"GoatCounter API {e.code} for {path}: {body}")
+    # GoatCounter occasionally answers a valid request with 404 {"error":"not found"};
+    # a retry a little later succeeds, so retry on 404/429/5xx and on network errors.
+    delay = 10
+    for attempt in range(1, 7):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as r:
+                return json.load(r)
+        except urllib.error.HTTPError as e:
+            body = e.read().decode("utf-8", "replace")[:300]
+            msg = f"GoatCounter API {e.code} for {path}: {body}"
+            if e.code not in (404, 429) and e.code < 500:
+                sys.exit(msg)
+        except (urllib.error.URLError, TimeoutError) as e:
+            msg = f"GoatCounter API network error for {path}: {e}"
+        print(f"attempt {attempt}: {msg}; retrying in {delay}s", file=sys.stderr)
+        time.sleep(delay)
+        delay = min(delay * 2, 120)
+    sys.exit(f"giving up on {path} after 6 attempts")
 
 # Sanity check: who is this token? (prints permissions and site access, never the token itself)
 me = get("me")
