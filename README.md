@@ -43,7 +43,7 @@ Not affiliated with, sponsored by, or endorsed by Medtronic. Artisse is a tradem
 | `sitemap.xml` | For search-engine submission. |
 
 `stats/community.json` feeds the "Who is using this explorer" section at the foot of the page:
-anonymous visitor counts by country and per day, pulled from GoatCounter once a day by the
+anonymous visitor counts by country and per day, pulled from GoatCounter every few hours by the
 GitHub Actions workflow in `.github/workflows/community-stats.yml` (script:
 `scripts/fetch_community_stats.py`, needs the repository secret `GOATCOUNTER_TOKEN`).
 

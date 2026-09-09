@@ -495,7 +495,7 @@ footer a:hover{text-decoration:underline;}
       <ol class="cc-list" id="community-list2"></ol>
     </div>
     <p class="fine" style="margin-top:14px">Anonymous, cookieless counts via GoatCounter (unique visitors per day, no personal data).
-      Refreshed daily; last update <span id="community-upd">&ndash;</span>.</p>
+      Refreshed several times a day; last update <span id="community-upd">&ndash;</span>.</p>
   </section>
 
 <script>
@@ -518,7 +518,7 @@ footer a:hover{text-decoration:underline;}
       li.querySelector('.n').textContent=c.name; li.querySelector('.v').textContent=fmt(c.visitors)+' ('+(c.visitors/d.total_visitors<0.005?'<1':Math.round(100*c.visitors/d.total_visitors))+'%)';
       (i<half?l1:l2).appendChild(li);
     });
-    var g=new Date(d.generated); document.getElementById('community-upd').textContent=isNaN(g)?'\u2013':g.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    var g=new Date(d.generated); document.getElementById('community-upd').textContent=isNaN(g)?'\u2013':g.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+g.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
     sec.hidden=false;
   }).catch(function(){});
 })();
