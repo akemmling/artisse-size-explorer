@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://akemmling.github.io/artisse-size-explorer/</loc>
-    <lastmod>2026-09-07</lastmod>
+    <loc>https://artisse-size-explorer.ak-apps.de/</loc>
+    <lastmod>2026-10-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://akemmling.github.io/artisse-size-explorer/background.html</loc>
-    <lastmod>2026-08-21</lastmod>
+    <loc>https://artisse-size-explorer.ak-apps.de/background.html</loc>
+    <lastmod>2026-10-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

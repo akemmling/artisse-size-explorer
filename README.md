@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22037111.svg)](https://doi.org/10.5281/zenodo.22037111)
 
-**→ [Open the explorer](https://akemmling.github.io/artisse-size-explorer/)**  ·  [Background & methods](https://akemmling.github.io/artisse-size-explorer/background.html)  ·  [Video walkthrough](https://youtu.be/-nHWv_m5mf4)
+**→ [Open the explorer](https://artisse-size-explorer.ak-apps.de/)**  ·  [Background & methods](https://artisse-size-explorer.ak-apps.de/background.html)  ·  [Video walkthrough](https://youtu.be/-nHWv_m5mf4)
 
 An interactive sizing chart for the Artisse™ intrasaccular device (Medtronic). The printed
 sizing sheet can only list a handful of fixed compression/height pairs per device. This page
@@ -20,7 +20,7 @@ Treating the braid as a scissor mesh gives `H² + α²·W² = L²`. The Medtroni
 publishes exactly two shapes per device — nominal width and height in air, and the compressed
 height at the rated maximum average aneurysm width — which is two points for the two unknowns
 `α` and `L`, so the curve through them is exact at both. Everything between and beyond those
-two widths is a model estimate. The [background page](https://akemmling.github.io/artisse-size-explorer/background.html)
+two widths is a model estimate. The [background page](https://artisse-size-explorer.ak-apps.de/background.html)
 sets this out step by step and names where every number comes from.
 
 ## Important
