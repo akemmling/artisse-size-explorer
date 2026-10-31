@@ -1,0 +1,15 @@
+# Artisse size explorer
+
+> Free, independent, interactive sizing chart for the Artisse(TM) 2.0 intrasaccular device (Medtronic): the compressed height of every Artisse size at any aneurysm width, plus a matcher that flags the sizes likely to fit a measured aneurysm (width, dome-neck height) and shows the protrusion at the neck. Author: Prof. Dr. André Kemmling, Neuroradiology, University Hospital Marburg. Educational and research use only; not affiliated with the manufacturer. DOI 10.5281/zenodo.22037111.
+
+Key facts
+- Artisse 2.0 comes in 20 sizes: widths 4.5-8 mm, heights 3-5 mm in air.
+- Medtronic publishes two shapes per size: nominal width x height in air, and the compressed height at the rated maximum average aneurysm width. Everything in between is a braid-model estimate (H^2 + a^2 W^2 = L^2, exact at the two published points), not clinically validated.
+- Counts of visitors by country are published on the page (anonymous, GoatCounter).
+
+Pages
+- [Explorer](https://artisse-size-explorer.ak-apps.de/): the interactive chart and matcher; the 20-size table and FAQ are in the "published numbers" section.
+- [Background and methods](https://artisse-size-explorer.ak-apps.de/background.html): the model, data provenance, per-device parameters, caveats.
+- [Video walkthrough](https://youtu.be/-nHWv_m5mf4): how to use the explorer on a case.
+- [Source code](https://github.com/akemmling/artisse-size-explorer)
+- [Citable archive](https://doi.org/10.5281/zenodo.22037111)
