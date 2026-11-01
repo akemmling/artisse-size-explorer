@@ -85,6 +85,18 @@ out = {
     "countries": countries,
     "daily": daily,
 }
+
+# Write only when the numbers changed. `generated` alone differs every run, and the
+# workflow pushes whenever this file changes (each push redeploys GitHub Pages).
+try:
+    with open(OUT, encoding="utf-8") as f:
+        old = json.load(f)
+except (OSError, ValueError):
+    old = None
+if old and all(old.get(k) == out[k] for k in ("since", "total_visitors", "countries", "daily")):
+    print(f"{OUT} unchanged: {total} visitors, {len(countries)} countries, {len(daily)} days")
+    sys.exit(0)
+
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 with open(OUT, "w", encoding="utf-8") as f:
     json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
