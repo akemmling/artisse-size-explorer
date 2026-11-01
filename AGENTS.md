@@ -5,7 +5,7 @@ device sizing sheet into a continuous width/height chart (scissor-braid model `H
 points per device). Author: Prof. André Kemmling. DOI 10.5281/zenodo.22037111 (cite the archived version). Public repo:
 nothing private, no patient data, no secrets in files.
 
-- `index.html` - the explorer; self-contained (no build, no dependencies, works offline). Build stamp in `.version`.
+- `index.html` - the explorer; self-contained (no build, no dependencies, works offline). There is no build step and no `.version` file: the build stamp `vYYYYMMDDHHMM` is hard-coded in the header of `index.html` and `background.html` (`<span class="version">`); update it, the JSON-LD `dateModified` in `index.html` and both `<lastmod>` in `sitemap.xml` with every content commit.
 - `background.html` - methods and sources. `og-card.png`, `sitemap.xml`, `CITATION.cff`, `LICENCE`.
 - `googlea8408cbf96a1ebee.html`, `423954e651654dc4b69779f01a4993fb.txt` - site verification files; keep.
 - `stats/community.json` - anonymous visitor counts, written every 6 hours by `.github/workflows/community-stats.yml`
